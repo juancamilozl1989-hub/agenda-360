@@ -84,6 +84,6 @@ El proyecto se desarrolla mediante sprints incrementales, aplicando buenas prác
 
 ## Autor
 
-Juan Camilo Zuleta
+Juan Camilo Zuleta López
 
 Proyecto desarrollado con fines académicos y como portafolio profesional de desarrollo de software.
