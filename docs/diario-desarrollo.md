@@ -17,3 +17,17 @@ Durante esta sesión se creó la estructura base para trabajar con SQLAlchemy, s
 También se implementó una validación para evitar registros con correos duplicados y se realizaron pruebas exitosas de almacenamiento en PostgreSQL.
 
 Estado del proyecto: Gestión básica de usuarios funcional.
+
+## Sesión 25/06/2026
+
+Durante esta sesión se completó la funcionalidad de consulta de usuarios registrados.
+
+Se implementó el endpoint GET /users para recuperar información desde PostgreSQL y posteriormente se mejoró la seguridad mediante la creación del esquema UserResponse, evitando que las contraseñas sean enviadas en las respuestas de la API.
+
+También se reforzó la organización del proyecto definiendo como regla trabajar Git desde la raíz del repositorio y FastAPI desde la carpeta backend.
+
+Estado actual:
+- Creación de usuarios funcional.
+- Listado de usuarios funcional.
+- Validación de correos duplicados funcional.
+- Respuestas seguras implementadas.

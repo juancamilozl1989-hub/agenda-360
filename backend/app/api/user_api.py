@@ -11,7 +11,7 @@ from app.core.dependencies import get_db
 from app.models.user_model import User
 
 # Esquema para validar datos de entrada
-from app.schemas.user_schema import UserCreate
+from app.schemas.user_schema import UserCreate, UserResponse
 
 
 # Agrupador de rutas relacionadas con usuarios
@@ -49,3 +49,13 @@ def crear_usuario(usuario: UserCreate, db: Session = Depends(get_db)):
     return {
         "mensaje": "Usuario creado correctamente"
     }
+    
+@router.get("/", response_model=list[UserResponse])
+def listar_usuarios(db: Session = Depends(get_db)):
+    """
+    Obtener todos los usuarios registrados.
+    """
+
+    usuarios = db.query(User).all()
+
+    return usuarios

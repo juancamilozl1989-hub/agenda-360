@@ -42,3 +42,19 @@ Implementar el primer modelo de negocio del sistema.
 
 ### Resultado
 El sistema permite registrar usuarios y almacenarlos correctamente en la base de datos agenda360.
+
+## 25/06/2026
+
+### Objetivo
+Continuar el desarrollo del módulo de usuarios y mejorar la seguridad de las respuestas de la API.
+
+### Actividades realizadas
+- Creación del endpoint GET /users.
+- Consulta de usuarios almacenados en PostgreSQL.
+- Verificación de funcionamiento mediante Swagger.
+- Creación del esquema UserResponse.
+- Implementación de respuesta segura para ocultar contraseñas.
+- Aplicación de response_model en FastAPI.
+
+### Resultado
+El sistema permite listar usuarios registrados sin exponer información sensible como las contraseñas.
