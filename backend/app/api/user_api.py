@@ -1,5 +1,5 @@
 # Permite obtener la conexión a la base de datos
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 
 # Tipo de sesión de SQLAlchemy
 from sqlalchemy.orm import Session
@@ -59,3 +59,22 @@ def listar_usuarios(db: Session = Depends(get_db)):
     usuarios = db.query(User).all()
 
     return usuarios
+
+@router.get("/{user_id}", response_model=UserResponse)
+def obtener_usuario(user_id: int, db: Session = Depends(get_db)):
+    """
+    Obtener un usuario específico por su ID.
+    """
+
+    # Buscar el usuario en la base de datos
+    usuario = db.query(User).filter(User.id == user_id).first()
+
+    # Si no existe, devolver un error 404
+    if usuario is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Usuario no encontrado"
+        )
+
+    # Si existe, devolver el usuario
+    return usuario

@@ -58,3 +58,18 @@ Continuar el desarrollo del módulo de usuarios y mejorar la seguridad de las re
 
 ### Resultado
 El sistema permite listar usuarios registrados sin exponer información sensible como las contraseñas.
+
+## 26/06/2026
+
+### Objetivo
+Ampliar el módulo de usuarios implementando la consulta de un usuario específico mediante su identificador.
+
+### Actividades realizadas
+- Implementación del endpoint GET /users/{id}.
+- Consulta de un usuario por su ID utilizando SQLAlchemy.
+- Implementación del manejo de errores mediante HTTPException.
+- Respuesta con código HTTP 404 cuando el usuario no existe.
+- Pruebas exitosas del endpoint desde Swagger para usuarios existentes e inexistentes.
+
+### Resultado
+El sistema permite consultar un usuario específico por su identificador y responde adecuadamente cuando el registro solicitado no existe, siguiendo buenas prácticas en el desarrollo de APIs REST.
