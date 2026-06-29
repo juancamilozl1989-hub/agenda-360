@@ -56,3 +56,11 @@ Durante las pruebas surgieron varios inconvenientes que fueron solucionados de m
 Con estas correcciones el CRUD quedó completamente funcional y probado mediante Swagger, validando tanto los casos exitosos como el manejo adecuado de errores cuando el usuario no existe.
 
 Este módulo servirá como plantilla para el desarrollo de los próximos recursos del sistema.
+
+## 30 de junio de 2026
+
+La sesión estuvo enfocada en iniciar el módulo de seguridad del sistema. Antes de comenzar con la autenticación se construyó un componente independiente encargado de gestionar la encriptación de contraseñas.
+
+Durante las pruebas apareció una incompatibilidad entre las versiones de `Passlib` y `bcrypt`, la cual fue analizada y corregida utilizando una versión compatible de la librería. Posteriormente se validó el correcto funcionamiento del algoritmo `bcrypt`, comprobando que una misma contraseña genera hashes diferentes en cada ejecución gracias al uso de un "salt" aleatorio, manteniendo siempre la posibilidad de verificar correctamente la contraseña original.
+
+Con esta base, Agenda 360 ya cuenta con la infraestructura necesaria para comenzar la implementación del registro seguro de usuarios y la autenticación mediante JWT.

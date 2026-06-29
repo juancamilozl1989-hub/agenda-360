@@ -3,6 +3,11 @@ from app.core.base import Base
 from app.core.database import engine
 from app.api.user_api import router as user_router
 
+from app.core.security import (
+    obtener_password_hash,
+    verificar_password
+)
+
 # Importamos el modelo para que SQLAlchemy lo registre
 from app.models.user_model import User
 
@@ -35,3 +40,30 @@ def test_db():
             "estado": "error",
             "detalle": str(e)
         }
+        
+# ==========================================================
+# Prueba temporal de seguridad
+# ==========================================================
+@app.get("/test-security")
+def test_security():
+    """
+    Endpoint temporal para comprobar
+    el funcionamiento de bcrypt.
+    """
+
+    password = "123456"
+
+    # Generar hash
+    password_hash = obtener_password_hash(password)
+
+    # Verificar contraseña
+    es_valida = verificar_password(
+        password,
+        password_hash
+    )
+
+    return {
+        "password_original": password,
+        "password_hash": password_hash,
+        "password_valida": es_valida
+    }
