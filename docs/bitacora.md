@@ -73,3 +73,17 @@ Ampliar el módulo de usuarios implementando la consulta de un usuario específi
 
 ### Resultado
 El sistema permite consultar un usuario específico por su identificador y responde adecuadamente cuando el registro solicitado no existe, siguiendo buenas prácticas en el desarrollo de APIs REST.
+
+## Fecha: 29/06/2026
+
+### Objetivo
+Finalizar el CRUD de usuarios implementando los endpoints de actualización y eliminación.
+
+### Actividades realizadas
+- Se creó el esquema `UserUpdate` para la actualización de usuarios.
+- Se implementó el endpoint `PUT /users/{id}` para modificar la información de un usuario.
+- Se implementó el endpoint `DELETE /users/{id}` para eliminar usuarios de la base de datos.
+- Se corrigió la nomenclatura del atributo `nombre` para mantener consistencia entre el modelo y los esquemas.
+- Se corrigió la ruta del endpoint `PUT`, eliminando la duplicación del prefijo `/users`.
+- Se instaló la dependencia `email-validator` requerida por `EmailStr` de Pydantic.
+- Se realizaron pruebas exitosas en Swagger para los endpoints `PUT` y `DELETE`, incluyendo casos exitosos y errores 404.

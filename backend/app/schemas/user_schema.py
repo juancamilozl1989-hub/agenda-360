@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
 class UserCreate(BaseModel):
@@ -9,6 +9,15 @@ class UserCreate(BaseModel):
     nombre: str
     email: str
     password: str
+    
+# ==========================================
+# Esquema para actualizar un usuario
+# ==========================================
+# En el futuro podremos agregar validaciones
+# diferentes a las del registro.
+class UserUpdate(BaseModel):
+    nombre: str
+    email: EmailStr 
     
 class UserResponse(BaseModel):
     """

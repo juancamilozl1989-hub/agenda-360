@@ -11,7 +11,7 @@ from app.core.dependencies import get_db
 from app.models.user_model import User
 
 # Esquema para validar datos de entrada
-from app.schemas.user_schema import UserCreate, UserResponse
+from app.schemas.user_schema import UserCreate, UserUpdate, UserResponse
 
 
 # Agrupador de rutas relacionadas con usuarios
@@ -78,3 +78,64 @@ def obtener_usuario(user_id: int, db: Session = Depends(get_db)):
 
     # Si existe, devolver el usuario
     return usuario
+
+# Actualizar un usuario por su ID
+# ==========================================
+@router.put("/{user_id}", response_model=UserResponse)
+def actualizar_usuario(
+    user_id: int,
+    user_data: UserUpdate,
+    db: Session = Depends(get_db)
+):
+    # Buscar el usuario en la base de datos
+    user = db.query(User).filter(User.id == user_id).first()
+
+    # Si no existe, devolver error 404
+    if not user:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+
+    # Actualizar los datos del usuario
+    user.nombre = user_data.nombre
+    user.email = user_data.email
+
+    # Guardar los cambios en la base de datos
+    db.commit()
+
+    # Refrescar el objeto para obtener la información actualizada
+    db.refresh(user)
+
+    # Retornar el usuario actualizado
+    return user
+
+# ==========================================
+# Eliminar un usuario por su ID
+# ==========================================
+@router.delete("/{user_id}")
+def eliminar_usuario(
+    user_id: int,
+    db: Session = Depends(get_db)
+):
+    """
+    Elimina un usuario de la base de datos.
+    """
+
+    # Buscar el usuario por su ID
+    usuario = db.query(User).filter(User.id == user_id).first()
+
+    # Si no existe, devolver error 404
+    if usuario is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Usuario no encontrado"
+        )
+
+    # Eliminar el usuario
+    db.delete(usuario)
+
+    # Guardar los cambios en la base de datos
+    db.commit()
+
+    # Confirmar la eliminación
+    return {
+        "mensaje": "Usuario eliminado correctamente"
+    }

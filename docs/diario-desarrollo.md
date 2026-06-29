@@ -46,3 +46,13 @@ Estado actual del módulo de usuarios:
 - Consulta de usuario por ID funcional.
 - Validación de correos duplicados implementada.
 - Respuestas seguras sin exponer contraseñas.
+
+## 29/06/2026
+
+Durante esta sesión se completó el módulo CRUD de usuarios con la implementación de las operaciones de actualización y eliminación.
+
+Durante las pruebas surgieron varios inconvenientes que fueron solucionados de manera progresiva. Inicialmente se detectó la ausencia de la librería `email-validator`, necesaria para utilizar el tipo `EmailStr` de Pydantic. Posteriormente se corrigió una inconsistencia entre los nombres de los atributos `name` y `nombre`, causada por la adaptación del proyecto al español. Finalmente se ajustó la definición de la ruta del endpoint `PUT`, evitando la duplicación del prefijo `/users`.
+
+Con estas correcciones el CRUD quedó completamente funcional y probado mediante Swagger, validando tanto los casos exitosos como el manejo adecuado de errores cuando el usuario no existe.
+
+Este módulo servirá como plantilla para el desarrollo de los próximos recursos del sistema.
