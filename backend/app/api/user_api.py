@@ -11,8 +11,11 @@ from app.core.dependencies import get_db
 from app.models.user_model import User
 
 # Esquema para validar datos de entrada
-from app.schemas.user_schema import UserCreate, UserUpdate, UserResponse
+from app.schemas.user_schema import UserCreate, UserUpdate, UserResponse, UserLogin
 
+from app.core.security import obtener_password_hash, verificar_password, crear_access_token, obtener_usuario_actual
+
+from fastapi.security import OAuth2PasswordRequestForm
 
 # Agrupador de rutas relacionadas con usuarios
 router = APIRouter(prefix="/users", tags=["Usuarios"])
@@ -37,7 +40,7 @@ def crear_usuario(usuario: UserCreate, db: Session = Depends(get_db)):
     nuevo_usuario = User(
         nombre=usuario.nombre,
         email=usuario.email,
-        password=usuario.password
+        password=obtener_password_hash(usuario.password)
     )
 
     # Guardar en la base de datos
@@ -51,7 +54,10 @@ def crear_usuario(usuario: UserCreate, db: Session = Depends(get_db)):
     }
     
 @router.get("/", response_model=list[UserResponse])
-def listar_usuarios(db: Session = Depends(get_db)):
+def listar_usuarios(
+    usuario_actual = Depends(obtener_usuario_actual),
+    db: Session = Depends(get_db)
+):
     """
     Obtener todos los usuarios registrados.
     """
@@ -138,4 +144,47 @@ def eliminar_usuario(
     # Confirmar la eliminación
     return {
         "mensaje": "Usuario eliminado correctamente"
+    }
+    
+# ==========================================
+# Login de usuario
+# ==========================================
+@router.post("/login")
+def login(
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_db)
+):
+    """
+    Verificar las credenciales de un usuario.
+    """
+
+    # Buscar usuario por correo (username contiene el email)
+    usuario = db.query(User).filter(
+        User.email == form_data.username
+    ).first()
+
+    if not usuario:
+        raise HTTPException(
+            status_code=401,
+            detail="Correo o contraseña incorrectos"
+        )
+
+    if not verificar_password(
+        form_data.password,
+        usuario.password
+    ):
+        raise HTTPException(
+            status_code=401,
+            detail="Correo o contraseña incorrectos"
+        )
+
+    access_token = crear_access_token(
+        data={
+            "sub": usuario.email
+        }
+    )
+
+    return {
+        "access_token": access_token,
+        "token_type": "bearer"
     }

@@ -12,6 +12,11 @@ Aquí se concentrarán todas las funciones relacionadas con:
 # Librería para encriptar contraseñas
 from passlib.context import CryptContext
 
+from jose import jwt, JWTError
+from datetime import datetime, timedelta
+from fastapi import HTTPException
+from fastapi.security import OAuth2PasswordBearer
+
 
 # ==========================================================
 # Configuración del algoritmo de encriptación
@@ -52,3 +57,63 @@ def verificar_password(
         password_plano,
         password_hash
     )
+    
+SECRET_KEY = "agenda360_secret_key"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+oauth2_scheme = OAuth2PasswordBearer(
+    tokenUrl="/users/login"
+)
+
+def crear_access_token(data: dict):
+    """
+    Genera un JWT.
+    """
+
+    datos = data.copy()
+
+    expire = datetime.utcnow() + timedelta(
+        minutes=ACCESS_TOKEN_EXPIRE_MINUTES
+    )
+
+    datos.update({"exp": expire})
+
+    return jwt.encode(
+        datos,
+        SECRET_KEY,
+        algorithm=ALGORITHM
+    )
+    
+def verificar_token(token: str):
+    """
+    Verifica que un JWT sea válido y devuelve su contenido.
+    """
+
+    try:
+        payload = jwt.decode(
+            token,
+            SECRET_KEY,
+            algorithms=[ALGORITHM]
+        )
+
+        return payload
+
+    except JWTError:
+        raise HTTPException(
+            status_code=401,
+            detail="Token inválido"
+        )
+        
+from fastapi import Depends
+
+
+def obtener_usuario_actual(
+    token: str = Depends(oauth2_scheme)
+):
+    """
+    Obtiene la información contenida
+    en el JWT del usuario autenticado.
+    """
+
+    return verificar_token(token)

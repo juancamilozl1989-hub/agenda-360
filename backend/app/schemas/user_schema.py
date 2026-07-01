@@ -30,3 +30,11 @@ class UserResponse(BaseModel):
 
     class Config:
         from_attributes = True
+        
+class UserLogin(BaseModel):
+    """
+    Datos necesarios para iniciar sesión.
+    """
+
+    email: EmailStr
+    password: str

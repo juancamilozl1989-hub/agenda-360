@@ -5,7 +5,8 @@ from app.api.user_api import router as user_router
 
 from app.core.security import (
     obtener_password_hash,
-    verificar_password
+    verificar_password,
+    verificar_token
 )
 
 # Importamos el modelo para que SQLAlchemy lo registre
@@ -66,4 +67,26 @@ def test_security():
         "password_original": password,
         "password_hash": password_hash,
         "password_valida": es_valida
+    }
+    
+from fastapi import Header
+
+@app.get("/verify-token")
+def verify_token_endpoint(
+    authorization: str = Header(...)
+):
+    """
+    Verifica un JWT enviado en el encabezado Authorization.
+    """
+
+    # El encabezado llega así:
+    # Bearer eyJhbGciOi...
+
+    token = authorization.replace("Bearer ", "")
+
+    payload = verificar_token(token)
+
+    return {
+        "mensaje": "Token válido",
+        "datos": payload
     }

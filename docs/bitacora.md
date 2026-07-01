@@ -103,3 +103,19 @@ Finalizar el CRUD de usuarios implementando los endpoints de actualización y el
 ### Resultado
 
 Quedó preparada la infraestructura inicial de seguridad que permitirá implementar el sistema de autenticación y autorización de Agenda 360 en las siguientes etapas del desarrollo.
+
+## 01/07/2026
+
+### Actividades realizadas
+
+- Se integró completamente el sistema de autenticación mediante JWT.
+- Se implementó el endpoint de login utilizando OAuth2PasswordRequestForm.
+- Se configuró Swagger UI para autenticarse mediante el botón Authorize.
+- Se protegió el endpoint de listado de usuarios utilizando Depends(obtener_usuario_actual).
+- Se realizaron pruebas de autenticación y autorización verificando el acceso únicamente con un token válido.
+- Se instaló la dependencia python-multipart requerida por OAuth2.
+- Se verificó el correcto funcionamiento del flujo completo de autenticación desde Swagger.
+
+### Resultado
+
+Agenda 360 cuenta ahora con un sistema de autenticación basado en JWT completamente funcional, permitiendo proteger los endpoints de la API y sentando las bases para la implementación futura de roles y permisos.

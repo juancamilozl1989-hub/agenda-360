@@ -64,3 +64,15 @@ La sesión estuvo enfocada en iniciar el módulo de seguridad del sistema. Antes
 Durante las pruebas apareció una incompatibilidad entre las versiones de `Passlib` y `bcrypt`, la cual fue analizada y corregida utilizando una versión compatible de la librería. Posteriormente se validó el correcto funcionamiento del algoritmo `bcrypt`, comprobando que una misma contraseña genera hashes diferentes en cada ejecución gracias al uso de un "salt" aleatorio, manteniendo siempre la posibilidad de verificar correctamente la contraseña original.
 
 Con esta base, Agenda 360 ya cuenta con la infraestructura necesaria para comenzar la implementación del registro seguro de usuarios y la autenticación mediante JWT.
+
+# Sesión de desarrollo - 01/07/2026
+
+Durante esta sesión se completó la integración del sistema de autenticación mediante JWT dentro del backend de Agenda 360.
+
+Inicialmente se adaptó el proceso de login para utilizar OAuth2PasswordRequestForm, permitiendo la integración nativa con Swagger UI. Posteriormente se instaló la dependencia python-multipart, necesaria para el procesamiento de formularios enviados durante la autenticación.
+
+Una vez configurado el login, se realizaron pruebas utilizando el botón Authorize de Swagger, verificando la generación automática del token JWT y su almacenamiento temporal durante la sesión.
+
+Finalmente se protegió el endpoint de listado de usuarios utilizando la dependencia obtener_usuario_actual, comprobando que únicamente los usuarios autenticados pueden acceder a la información. También se validó el comportamiento del sistema al cerrar sesión, verificando que el acceso a los recursos protegidos es rechazado cuando no existe un token válido.
+
+Con esta implementación se concluye la primera etapa del sistema de seguridad del proyecto, dejando preparada la arquitectura para la incorporación de roles, permisos y control de acceso específico para cada tipo de usuario del sistema.
