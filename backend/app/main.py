@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from app.core.base import Base
 from app.core.database import engine
 from app.api.user_api import router as user_router
+from app.api.barbershop_api import router as barbershop_router
+from app.api.barber_api import router as barber_router
 
 from app.core.security import (
     obtener_password_hash,
@@ -11,11 +13,15 @@ from app.core.security import (
 
 # Importamos el modelo para que SQLAlchemy lo registre
 from app.models.user_model import User
+from app.models.barbershop_model import Barbershop
+from app.models.barber_model import Barber
 
 app = FastAPI()
 
 # Registrar rutas de usuarios
 app.include_router(user_router)
+app.include_router(barbershop_router)
+app.include_router(barber_router)
 
 # Crear tablas automáticamente
 Base.metadata.create_all(bind=engine)
@@ -90,3 +96,4 @@ def verify_token_endpoint(
         "mensaje": "Token válido",
         "datos": payload
     }
+    

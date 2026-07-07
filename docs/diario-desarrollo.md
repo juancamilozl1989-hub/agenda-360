@@ -76,3 +76,11 @@ Una vez configurado el login, se realizaron pruebas utilizando el botón Authori
 Finalmente se protegió el endpoint de listado de usuarios utilizando la dependencia obtener_usuario_actual, comprobando que únicamente los usuarios autenticados pueden acceder a la información. También se validó el comportamiento del sistema al cerrar sesión, verificando que el acceso a los recursos protegidos es rechazado cuando no existe un token válido.
 
 Con esta implementación se concluye la primera etapa del sistema de seguridad del proyecto, dejando preparada la arquitectura para la incorporación de roles, permisos y control de acceso específico para cada tipo de usuario del sistema.
+
+## 06/07/2026
+
+Durante esta jornada se inició el desarrollo del módulo de Barberos, el cual constituye uno de los componentes principales del flujo operativo de Agenda 360. Se diseñó el modelo de datos estableciendo una relación uno a muchos entre barberías y barberos mediante el uso de claves foráneas y relaciones bidireccionales con SQLAlchemy.
+
+Posteriormente se implementaron los esquemas necesarios para la creación, actualización y respuesta de la API, así como el primer endpoint encargado del registro de nuevos barberos. Como parte de las buenas prácticas de desarrollo, se incorporó una validación que verifica la existencia de la barbería antes de permitir el registro del barbero, garantizando así la consistencia de la información almacenada.
+
+Durante las pruebas se presentó un inconveniente relacionado con la importación del esquema barber_schema.py, el cual fue identificado y solucionado. Finalmente se realizaron pruebas funcionales desde Swagger registrando exitosamente la primera barbería y su primer barbero, confirmando el correcto funcionamiento de la relación entre ambas entidades.

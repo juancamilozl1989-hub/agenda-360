@@ -119,3 +119,17 @@ Quedó preparada la infraestructura inicial de seguridad que permitirá implemen
 ### Resultado
 
 Agenda 360 cuenta ahora con un sistema de autenticación basado en JWT completamente funcional, permitiendo proteger los endpoints de la API y sentando las bases para la implementación futura de roles y permisos.
+
+## 06/07/2026
+
+## Actividades realizadas
+
+- Se creó el modelo Barber para representar los barberos de cada establecimiento.
+- Se implementó la relación uno a muchos entre las entidades Barbershop y Barber utilizando ForeignKey, relationship() y back_populates.
+- Se configuró la eliminación en cascada (cascade="all, delete") para mantener la integridad de los datos.
+- Se registró el nuevo modelo en SQLAlchemy y se verificó la creación de la tabla barbers en PostgreSQL.
+- Se desarrollaron los esquemas BarberCreate, BarberUpdate y BarberResponse.
+- Se implementó el primer endpoint para registrar barberos.
+- Se agregó una validación para impedir el registro de barberos asociados a barberías inexistentes.
+- Se registró el router del nuevo módulo dentro de la aplicación.
+-Se realizaron pruebas exitosas desde Swagger creando la primera barbería y el primer barbero asociados correctamente.
