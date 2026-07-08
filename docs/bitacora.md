@@ -133,3 +133,24 @@ Agenda 360 cuenta ahora con un sistema de autenticación basado en JWT completam
 - Se agregó una validación para impedir el registro de barberos asociados a barberías inexistentes.
 - Se registró el router del nuevo módulo dentro de la aplicación.
 -Se realizaron pruebas exitosas desde Swagger creando la primera barbería y el primer barbero asociados correctamente.
+
+## 07 de julio de 2026
+
+## Actividad realizada
+
+Durante esta sesión se continuó con el desarrollo del módulo Barberos dentro del proyecto Agenda 360 SIC. Se implementó el CRUD completo para la gestión de barberos utilizando FastAPI, SQLAlchemy y PostgreSQL.
+
+Se desarrollaron los siguientes endpoints:
+
+Listar todos los barberos (GET /barbers/).
+Consultar un barbero por su identificador (GET /barbers/{id}).
+Actualizar la información de un barbero (PUT /barbers/{id}).
+Eliminar un barbero (DELETE /barbers/{id}).
+
+Durante el desarrollo se presentó un error relacionado con Pydantic (class-not-fully-defined), ocasionado por la ausencia de la importación del esquema BarberUpdate. Se realizó el proceso de análisis del error, se identificó la causa y se corrigió la importación correspondiente, permitiendo nuevamente la generación de la documentación OpenAPI y el funcionamiento correcto de la aplicación.
+
+Posteriormente se realizaron pruebas funcionales desde Swagger verificando el correcto comportamiento de cada uno de los endpoints implementados, validando tanto los casos exitosos como las respuestas ante registros inexistentes.
+
+## Resultado
+
+El módulo Barberos quedó completamente funcional, con operaciones de creación, consulta, actualización y eliminación correctamente implementadas y verificadas sobre la base de datos PostgreSQL

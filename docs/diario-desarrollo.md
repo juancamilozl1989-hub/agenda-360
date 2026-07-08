@@ -84,3 +84,19 @@ Durante esta jornada se inició el desarrollo del módulo de Barberos, el cual c
 Posteriormente se implementaron los esquemas necesarios para la creación, actualización y respuesta de la API, así como el primer endpoint encargado del registro de nuevos barberos. Como parte de las buenas prácticas de desarrollo, se incorporó una validación que verifica la existencia de la barbería antes de permitir el registro del barbero, garantizando así la consistencia de la información almacenada.
 
 Durante las pruebas se presentó un inconveniente relacionado con la importación del esquema barber_schema.py, el cual fue identificado y solucionado. Finalmente se realizaron pruebas funcionales desde Swagger registrando exitosamente la primera barbería y su primer barbero, confirmando el correcto funcionamiento de la relación entre ambas entidades.
+
+## Fecha: 07 de julio de 2026
+
+## Objetivo de la sesión
+
+Finalizar el desarrollo del CRUD del módulo Barberos, verificando el correcto funcionamiento de cada endpoint y consolidando este módulo como parte del MVP de Agenda 360.
+
+## Desarrollo realizado
+
+Durante esta jornada se implementaron los endpoints pendientes para la administración de barberos utilizando FastAPI y SQLAlchemy.
+
+Se desarrollaron las operaciones de consulta general, consulta por identificador, actualización y eliminación de registros, reutilizando la estructura de trabajo implementada previamente en los módulos de Usuarios y Barberías.
+
+Durante las pruebas se detectó un error generado por Pydantic relacionado con la definición del esquema BarberUpdate. Después de analizar el mensaje de error y revisar la estructura del proyecto, se identificó que el esquema no había sido importado dentro del archivo barber_api.py. Una vez corregido este detalle, la documentación de Swagger volvió a generarse correctamente y todas las pruebas fueron exitosas.
+
+Finalmente se verificó el funcionamiento completo del CRUD mediante pruebas realizadas desde Swagger, comprobando tanto las respuestas exitosas como el manejo adecuado de errores cuando el recurso solicitado no existía.
