@@ -154,3 +154,37 @@ Posteriormente se realizaron pruebas funcionales desde Swagger verificando el co
 ## Resultado
 
 El módulo Barberos quedó completamente funcional, con operaciones de creación, consulta, actualización y eliminación correctamente implementadas y verificadas sobre la base de datos PostgreSQL
+
+## Sesión de desarrollo – Módulo de Servicios
+
+## Fecha: 12 de julio de 2026
+
+## Objetivo de la sesión
+
+Desarrollar el módulo Servicios, permitiendo registrar los servicios que ofrece cada barbero, establecer la relación entre barberos y servicios, implementar el CRUD completo mediante FastAPI y verificar su correcto funcionamiento desde Swagger.
+
+Actividades realizadas
+Se creó el modelo Service con los campos correspondientes:
+nombre
+descripción
+precio
+duración
+barber_id
+Se estableció la relación entre Barber y Service utilizando SQLAlchemy.
+Se registró el nuevo modelo para crear automáticamente la tabla services en PostgreSQL.
+Se desarrollaron los esquemas (ServiceCreate, ServiceUpdate y ServiceResponse) utilizando Pydantic.
+Se creó el esquema reutilizable BarberSimple para evitar duplicación de código entre módulos.
+Se implementó el CRUD completo del módulo Servicios:
+Crear servicio
+Consultar todos los servicios
+Consultar un servicio por ID
+Actualizar un servicio
+Eliminar un servicio
+Se registró el router del módulo en main.py.
+Se realizaron pruebas funcionales desde Swagger para validar todos los endpoints.
+Se verificó el correcto funcionamiento de las relaciones entre Barberías, Barberos y Servicios.
+Se realizaron pruebas adicionales creando y eliminando registros para validar el correcto comportamiento del CRUD.
+
+## Resultado de la sesión
+
+El módulo Servicios quedó completamente funcional y conectado con el módulo de Barberos. Se confirmó el correcto funcionamiento de las relaciones ORM, la persistencia de datos en PostgreSQL y la validación de los endpoints mediante Swagger.

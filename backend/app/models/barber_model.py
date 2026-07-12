@@ -35,4 +35,12 @@ class Barber(Base):
     barbershop = relationship(
         "Barbershop",
         back_populates="barbers"
-)
+    )
+
+    # Servicios del barbero
+    services = relationship(
+        "Service",
+        back_populates="barber",
+        cascade="all, delete-orphan"
+    )
+    

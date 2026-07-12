@@ -100,3 +100,17 @@ Se desarrollaron las operaciones de consulta general, consulta por identificador
 Durante las pruebas se detectó un error generado por Pydantic relacionado con la definición del esquema BarberUpdate. Después de analizar el mensaje de error y revisar la estructura del proyecto, se identificó que el esquema no había sido importado dentro del archivo barber_api.py. Una vez corregido este detalle, la documentación de Swagger volvió a generarse correctamente y todas las pruebas fueron exitosas.
 
 Finalmente se verificó el funcionamiento completo del CRUD mediante pruebas realizadas desde Swagger, comprobando tanto las respuestas exitosas como el manejo adecuado de errores cuando el recurso solicitado no existía.
+
+## 12/07/2026
+
+Durante esta sesión se desarrolló completamente el módulo Servicios, correspondiente a la gestión de los servicios ofrecidos por cada barbero.
+
+Inicialmente se creó el modelo Service, definiendo los atributos necesarios para representar cada servicio y estableciendo la relación con el modelo Barber mediante SQLAlchemy. Posteriormente se registró el modelo dentro de la aplicación para permitir la creación automática de la tabla services en PostgreSQL.
+
+Se implementaron los esquemas de validación utilizando Pydantic (ServiceCreate, ServiceUpdate y ServiceResponse), incorporando el esquema reutilizable BarberSimple con el objetivo de mantener una arquitectura limpia y reutilizable entre módulos.
+
+A continuación se desarrolló el CRUD completo utilizando FastAPI, incluyendo las operaciones de creación, consulta, actualización y eliminación de servicios. Durante el desarrollo se validó previamente la existencia del barbero antes de registrar o actualizar un servicio, garantizando la integridad de la información.
+
+Finalmente se realizaron pruebas completas desde Swagger, verificando el correcto funcionamiento de todos los endpoints. Como validación adicional se creó un segundo servicio únicamente para comprobar el funcionamiento del endpoint DELETE, eliminándolo posteriormente para dejar la base de datos organizada.
+
+Con este avance quedó finalizado el cuarto módulo funcional del proyecto Agenda 360, consolidando la estructura principal sobre la cual se construirá el módulo de horarios y posteriormente el sistema de agendamiento inteligente mediante WhatsApp.

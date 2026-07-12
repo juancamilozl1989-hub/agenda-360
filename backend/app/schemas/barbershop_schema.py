@@ -36,3 +36,23 @@ class BarbershopResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+# ==========================================
+# Información básica de una barbería
+# ==========================================
+class BarbershopSimple(BaseModel):
+    """
+    Información mínima de una barbería.
+
+    Este esquema será utilizado cuando
+    otros módulos necesiten mostrar
+    únicamente los datos básicos de
+    la barbería.
+    """
+
+    id: int
+    nombre: str
+
+    class Config:
+        from_attributes = True

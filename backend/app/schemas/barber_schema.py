@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from app.schemas.barbershop_schema import BarbershopSimple
 
 
 # ==========================================
@@ -27,6 +28,20 @@ class BarberUpdate(BaseModel):
     nombre: str
     telefono: str
     barbershop_id: int
+    
+# ==========================================
+# Información resumida del barbero
+# ==========================================
+class BarberSimple(BaseModel):
+    """
+    Información mínima de un barbero.
+    """
+
+    id: int
+    nombre: str
+
+    class Config:
+        from_attributes = True
 
 
 # ==========================================
@@ -41,7 +56,8 @@ class BarberResponse(BaseModel):
     id: int
     nombre: str
     telefono: str
-    barbershop_id: int
+
+    barbershop: BarbershopSimple
 
     class Config:
         from_attributes = True
