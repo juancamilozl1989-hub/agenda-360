@@ -114,3 +114,15 @@ A continuación se desarrolló el CRUD completo utilizando FastAPI, incluyendo l
 Finalmente se realizaron pruebas completas desde Swagger, verificando el correcto funcionamiento de todos los endpoints. Como validación adicional se creó un segundo servicio únicamente para comprobar el funcionamiento del endpoint DELETE, eliminándolo posteriormente para dejar la base de datos organizada.
 
 Con este avance quedó finalizado el cuarto módulo funcional del proyecto Agenda 360, consolidando la estructura principal sobre la cual se construirá el módulo de horarios y posteriormente el sistema de agendamiento inteligente mediante WhatsApp.
+
+## 13/07/2026
+
+Durante esta sesión se desarrolló completamente el módulo Horarios, encargado de administrar la disponibilidad laboral de los barberos.
+
+Se inició creando el modelo Schedule, utilizando el tipo de dato Time para representar correctamente las horas de inicio y finalización de la jornada laboral. Posteriormente se estableció la relación entre los modelos Barber y Schedule, permitiendo que un barbero pueda tener múltiples horarios registrados.
+
+Después se implementaron los esquemas de validación utilizando Pydantic y se desarrolló el CRUD completo mediante FastAPI. Las operaciones incluyen la creación, consulta, actualización y eliminación de horarios, verificando previamente la existencia del barbero para garantizar la integridad de los datos.
+
+Finalmente se realizaron pruebas completas desde Swagger, comprobando el funcionamiento de todos los endpoints. Como parte de las pruebas se creó un horario adicional para validar el endpoint DELETE y posteriormente se eliminó, dejando únicamente los horarios necesarios para continuar el desarrollo del proyecto.
+
+Con este avance Agenda 360 cuenta ahora con cinco módulos completamente funcionales, consolidando la estructura necesaria para iniciar el desarrollo de los módulos de Clientes y Citas, que serán la base del sistema de agendamiento inteligente.

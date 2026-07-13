@@ -44,3 +44,10 @@ class Barber(Base):
         cascade="all, delete-orphan"
     )
     
+    # Horarios del barbero
+    schedules = relationship(
+        "Schedule",
+        back_populates="barber",
+        cascade="all, delete-orphan"
+    )
+    

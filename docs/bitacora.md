@@ -188,3 +188,35 @@ Se realizaron pruebas adicionales creando y eliminando registros para validar el
 ## Resultado de la sesión
 
 El módulo Servicios quedó completamente funcional y conectado con el módulo de Barberos. Se confirmó el correcto funcionamiento de las relaciones ORM, la persistencia de datos en PostgreSQL y la validación de los endpoints mediante Swagger.
+
+## Sesión de desarrollo – Módulo de Horarios
+
+## Fecha: 13 de julio de 2026
+
+## Objetivo de la sesión
+
+Desarrollar el módulo Horarios, permitiendo registrar la disponibilidad laboral de cada barbero, establecer la relación entre barberos y horarios, implementar el CRUD completo mediante FastAPI y validar su funcionamiento desde Swagger.
+
+Actividades realizadas
+Se creó el modelo Schedule con los campos:
+día de la semana
+hora de inicio
+hora de finalización
+barber_id
+Se implementó el tipo de dato Time para almacenar correctamente las horas de trabajo.
+Se estableció la relación entre Barber y Schedule mediante SQLAlchemy.
+Se registró el modelo para crear automáticamente la tabla schedules en PostgreSQL.
+Se desarrollaron los esquemas ScheduleCreate, ScheduleUpdate y ScheduleResponse.
+Se implementó el CRUD completo del módulo Horarios:
+Crear horario
+Consultar todos los horarios
+Consultar un horario por ID
+Actualizar un horario
+Eliminar un horario
+Se registró el router del módulo en main.py.
+Se realizaron pruebas funcionales desde Swagger para validar todos los endpoints.
+Se verificó la correcta relación entre Barberos y Horarios.
+Se realizaron pruebas adicionales creando y eliminando registros para validar el funcionamiento del endpoint DELETE.
+Resultado de la sesión
+
+El módulo Horarios quedó completamente funcional y conectado con el módulo de Barberos. Se validó el almacenamiento de horas mediante el tipo Time, el correcto funcionamiento de las relaciones ORM y la persistencia de la información en PostgreSQL.
