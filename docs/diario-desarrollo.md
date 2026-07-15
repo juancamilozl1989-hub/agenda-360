@@ -126,3 +126,15 @@ Después se implementaron los esquemas de validación utilizando Pydantic y se d
 Finalmente se realizaron pruebas completas desde Swagger, comprobando el funcionamiento de todos los endpoints. Como parte de las pruebas se creó un horario adicional para validar el endpoint DELETE y posteriormente se eliminó, dejando únicamente los horarios necesarios para continuar el desarrollo del proyecto.
 
 Con este avance Agenda 360 cuenta ahora con cinco módulos completamente funcionales, consolidando la estructura necesaria para iniciar el desarrollo de los módulos de Clientes y Citas, que serán la base del sistema de agendamiento inteligente.
+
+## 14 de julio de 2026
+
+Durante esta sesión se desarrolló completamente el módulo Clientes, encargado de administrar la información de los clientes pertenecientes a cada barbería.
+
+Se inició con la creación del modelo Client, estableciendo la relación con Barbershop mediante SQLAlchemy para garantizar que cada cliente pertenezca a una barbería registrada. Posteriormente se implementaron los esquemas de validación utilizando Pydantic y se desarrolló el CRUD completo mediante FastAPI.
+
+Las operaciones implementadas permiten registrar, consultar, actualizar y eliminar clientes, validando previamente la existencia de la barbería para mantener la integridad de la información.
+
+Finalmente se realizaron pruebas funcionales desde Swagger para comprobar el correcto funcionamiento de todos los endpoints. Como parte de las pruebas se creó un segundo cliente para validar el endpoint DELETE y posteriormente se eliminó, dejando únicamente el registro principal para continuar con el desarrollo del proyecto.
+
+Con este avance, Agenda 360 cuenta ya con seis módulos completamente funcionales, consolidando la estructura principal del backend y dejando preparado el entorno para iniciar el desarrollo del módulo de Citas (Appointments), el componente central del sistema de agendamiento.

@@ -35,5 +35,12 @@ class Barbershop(Base):
     barbers = relationship(
         "Barber",
         back_populates="barbershop",
-        cascade="all, delete"
+        cascade="all, delete-orphan"
+)
+
+    # Lista de clientes que pertenecen a esta barbería
+    clients = relationship(
+        "Client",
+        back_populates="barbershop",
+        cascade="all, delete-orphan"
 )

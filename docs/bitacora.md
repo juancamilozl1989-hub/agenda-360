@@ -220,3 +220,35 @@ Se realizaron pruebas adicionales creando y eliminando registros para validar el
 Resultado de la sesión
 
 El módulo Horarios quedó completamente funcional y conectado con el módulo de Barberos. Se validó el almacenamiento de horas mediante el tipo Time, el correcto funcionamiento de las relaciones ORM y la persistencia de la información en PostgreSQL.
+
+## Sesión de desarrollo – Módulo de Clientes
+
+## Fecha: 14 de julio de 2026
+
+## Objetivo de la sesión
+
+Desarrollar el módulo Clientes, permitiendo registrar los clientes pertenecientes a una barbería, implementar la relación con el módulo de Barberías y construir el CRUD completo utilizando FastAPI y PostgreSQL.
+
+Actividades realizadas
+Se creó el modelo Client con los campos:
+nombre
+teléfono
+correo electrónico
+barbershop_id
+Se estableció la relación entre Client y Barbershop mediante SQLAlchemy.
+Se actualizó el modelo Barbershop para incluir la relación con los clientes.
+Se registró el modelo para generar automáticamente la tabla clients en PostgreSQL.
+Se desarrollaron los esquemas ClientCreate, ClientUpdate y ClientResponse.
+Se implementó el CRUD completo del módulo Clientes:
+Crear cliente
+Consultar todos los clientes
+Consultar un cliente por ID
+Actualizar cliente
+Eliminar cliente
+Se registró el router correspondiente en main.py.
+Se realizaron pruebas funcionales desde Swagger para validar todos los endpoints.
+Se verificó la correcta relación entre Clientes y Barberías.
+Se realizaron pruebas adicionales creando y eliminando un segundo cliente para validar el funcionamiento del endpoint DELETE.
+Resultado de la sesión
+
+El módulo Clientes quedó completamente funcional e integrado con el módulo de Barberías. Se verificó el correcto funcionamiento de las relaciones ORM, la persistencia de los datos en PostgreSQL y la ejecución satisfactoria de todas las operaciones CRUD.

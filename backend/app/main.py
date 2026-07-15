@@ -6,6 +6,7 @@ from app.api.barbershop_api import router as barbershop_router
 from app.api.barber_api import router as barber_router
 from app.api.service_api import router as service_router
 from app.api.schedule_api import router as schedule_router
+from app.api.client_api import router as client_router
 
 from app.core.security import (
     obtener_password_hash,
@@ -19,6 +20,7 @@ from app.models.barbershop_model import Barbershop
 from app.models.barber_model import Barber
 from app.models.service_model import Service
 from app.models.schedule_model import Schedule
+from app.models.client_model import Client
 
 app = FastAPI()
 
@@ -28,6 +30,7 @@ app.include_router(barbershop_router)
 app.include_router(barber_router)
 app.include_router(service_router)
 app.include_router(schedule_router)
+app.include_router(client_router)
 
 # Crear tablas automáticamente
 Base.metadata.create_all(bind=engine)
