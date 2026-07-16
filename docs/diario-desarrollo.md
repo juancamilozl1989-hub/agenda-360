@@ -138,3 +138,15 @@ Las operaciones implementadas permiten registrar, consultar, actualizar y elimin
 Finalmente se realizaron pruebas funcionales desde Swagger para comprobar el correcto funcionamiento de todos los endpoints. Como parte de las pruebas se creó un segundo cliente para validar el endpoint DELETE y posteriormente se eliminó, dejando únicamente el registro principal para continuar con el desarrollo del proyecto.
 
 Con este avance, Agenda 360 cuenta ya con seis módulos completamente funcionales, consolidando la estructura principal del backend y dejando preparado el entorno para iniciar el desarrollo del módulo de Citas (Appointments), el componente central del sistema de agendamiento.
+
+## 15/07/2026
+
+Durante esta sesión se desarrolló completamente el módulo Citas, considerado el componente central del sistema Agenda 360.
+
+Se inició con la creación del modelo Appointment, estableciendo relaciones con los módulos de Clientes, Barberos y Servicios. Posteriormente se implementaron los esquemas de validación mediante Pydantic y el CRUD completo utilizando FastAPI.
+
+Durante el desarrollo también se resolvió un inconveniente relacionado con el entorno de desarrollo en Visual Studio Code, donde el analizador utilizaba un intérprete de Python diferente al entorno virtual del proyecto. Tras configurar correctamente el intérprete del venv, desaparecieron las advertencias y el proyecto continuó funcionando con normalidad.
+
+Se realizaron pruebas funcionales desde Swagger verificando la creación, consulta, actualización y eliminación de citas. Como parte de las pruebas se creó una segunda cita para validar el endpoint DELETE y posteriormente se eliminó, conservando únicamente la cita principal.
+
+Con este avance, Agenda 360 dispone de todos los módulos fundamentales del backend y ya puede gestionar el flujo principal de reservas entre clientes, barberos y servicios.

@@ -34,9 +34,16 @@ class Client(Base):
         ForeignKey("barbershops.id"),
         nullable=False
     )
-
-    # Relación ORM
+    
+        # Relación ORM
     barbershop = relationship(
         "Barbershop",
         back_populates="clients"
     )
+    
+    # Citas del cliente
+    appointments = relationship(
+        "Appointment",
+        back_populates="client",
+        cascade="all, delete-orphan"
+)

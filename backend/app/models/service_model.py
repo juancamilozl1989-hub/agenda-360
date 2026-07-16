@@ -36,9 +36,16 @@ class Service(Base):
         ForeignKey("barbers.id"),
         nullable=False
     )
-
-    # Relación ORM
+    
+        # Relación ORM
     barber = relationship(
         "Barber",
         back_populates="services"
     )
+    
+    # Citas del servicio
+    appointments = relationship(
+        "Appointment",
+        back_populates="service",
+        cascade="all, delete-orphan"
+)

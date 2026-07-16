@@ -252,3 +252,44 @@ Se realizaron pruebas adicionales creando y eliminando un segundo cliente para v
 Resultado de la sesión
 
 El módulo Clientes quedó completamente funcional e integrado con el módulo de Barberías. Se verificó el correcto funcionamiento de las relaciones ORM, la persistencia de los datos en PostgreSQL y la ejecución satisfactoria de todas las operaciones CRUD.
+
+## Sesión de desarrollo – Módulo de Citas
+
+## Fecha: 15 de julio de 2026
+
+## Objetivo de la sesión
+
+Desarrollar el módulo Citas, encargado de registrar reservas entre clientes, barberos y servicios, implementando las relaciones necesarias y el CRUD completo utilizando FastAPI y PostgreSQL.
+
+Actividades realizadas
+Se creó el modelo Appointment.
+Se definieron los campos:
+fecha
+hora
+estado
+client_id
+barber_id
+service_id
+Se establecieron las relaciones ORM entre:
+Appointment y Client.
+Appointment y Barber.
+Appointment y Service.
+Se actualizaron los modelos relacionados para incluir la colección de citas.
+Se registró el modelo para generar automáticamente la tabla appointments.
+Se desarrollaron los esquemas:
+AppointmentCreate
+AppointmentUpdate
+AppointmentResponse
+Se implementó el CRUD completo del módulo Citas:
+Crear cita.
+Consultar todas las citas.
+Consultar una cita por ID.
+Actualizar cita.
+Eliminar cita.
+Se realizaron validaciones para comprobar la existencia del cliente, barbero y servicio antes de registrar o actualizar una cita.
+Se registró el router correspondiente en main.py.
+Se realizaron pruebas funcionales desde Swagger para validar todos los endpoints.
+Se resolvió un inconveniente en VS Code relacionado con el intérprete de Python, configurando correctamente el entorno virtual (venv).
+Resultado de la sesión
+
+El módulo Citas quedó completamente funcional, consolidando la estructura principal del backend. El sistema ya puede registrar reservas reales relacionando correctamente clientes, barberos y servicios mediante SQLAlchemy y PostgreSQL.
