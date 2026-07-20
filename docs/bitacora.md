@@ -293,3 +293,31 @@ Se resolvió un inconveniente en VS Code relacionado con el intérprete de Pytho
 Resultado de la sesión
 
 El módulo Citas quedó completamente funcional, consolidando la estructura principal del backend. El sistema ya puede registrar reservas reales relacionando correctamente clientes, barberos y servicios mediante SQLAlchemy y PostgreSQL.
+
+## 20 de julio de 2026
+
+### Módulo de Citas
+
+Se fortaleció la lógica de negocio del módulo de citas implementando nuevas validaciones tanto para la creación (POST) como para la actualización (PUT) de registros.
+
+### Validaciones implementadas
+
+- Se impide registrar o actualizar citas con fechas anteriores a la fecha actual.
+- Se valida que el servicio seleccionado pertenezca al barbero asignado a la cita.
+- Se evita que un mismo barbero tenga dos citas programadas para la misma fecha y hora.
+- Se incorporó un Enum (`AppointmentStatus`) para restringir los estados permitidos de una cita a: Pendiente, Confirmada, Cancelada y Completada.
+
+### Pruebas realizadas
+
+Se verificó correctamente:
+
+- Creación de citas válidas.
+- Rechazo de citas con fechas pasadas.
+- Rechazo de servicios asociados a otro barbero.
+- Rechazo de citas duplicadas.
+- Validación del Enum mediante Swagger.
+- Actualización de citas respetando todas las reglas de negocio.
+
+### Resultado
+
+El módulo de citas quedó protegido contra las principales inconsistencias de negocio tanto en el endpoint de creación como en el de actualización.

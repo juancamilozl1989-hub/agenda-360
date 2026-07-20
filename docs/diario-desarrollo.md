@@ -150,3 +150,33 @@ Durante el desarrollo también se resolvió un inconveniente relacionado con el 
 Se realizaron pruebas funcionales desde Swagger verificando la creación, consulta, actualización y eliminación de citas. Como parte de las pruebas se creó una segunda cita para validar el endpoint DELETE y posteriormente se eliminó, conservando únicamente la cita principal.
 
 Con este avance, Agenda 360 dispone de todos los módulos fundamentales del backend y ya puede gestionar el flujo principal de reservas entre clientes, barberos y servicios.
+
+# Diario de Desarrollo
+
+## Fecha
+
+20 de julio de 2026
+
+## Objetivo de la sesión
+
+Fortalecer el módulo de citas implementando reglas de negocio para garantizar la consistencia de la información durante la creación y actualización de citas.
+
+## Actividades realizadas
+
+- Implementación de validación para impedir citas con fechas pasadas.
+- Validación de correspondencia entre servicio y barbero.
+- Validación para impedir citas duplicadas en la misma fecha y hora.
+- Implementación de un Enum para controlar los estados permitidos de las citas.
+- Replicación de todas las validaciones en el endpoint PUT.
+- Ejecución de pruebas funcionales utilizando Swagger.
+- Verificación del correcto funcionamiento de todas las reglas implementadas.
+
+## Resultado
+
+El módulo de citas quedó completamente validado para las operaciones de creación y actualización, reduciendo la posibilidad de inconsistencias en la base de datos.
+
+## Próximos pasos
+
+- Revisar nuevas reglas de negocio para fortalecer el sistema.
+- Refactorizar la lógica de negocio hacia una arquitectura más modular.
+- Implementar autenticación mediante JWT y control de acceso por roles.
