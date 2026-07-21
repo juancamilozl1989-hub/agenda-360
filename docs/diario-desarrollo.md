@@ -180,3 +180,17 @@ El módulo de citas quedó completamente validado para las operaciones de creaci
 - Revisar nuevas reglas de negocio para fortalecer el sistema.
 - Refactorizar la lógica de negocio hacia una arquitectura más modular.
 - Implementar autenticación mediante JWT y control de acceso por roles.
+
+# Diario de Desarrollo
+
+## 21 de julio de 2026
+
+Durante esta sesión se dio inicio al proceso de refactorización del backend con el objetivo de implementar una arquitectura por capas.
+
+Se creó el archivo `appointment_service.py`, donde se trasladó la lógica de negocio correspondiente a la creación de citas. Posteriormente, el endpoint `POST /appointments` fue modificado para consumir dicha capa de servicios, reduciendo considerablemente la responsabilidad del router.
+
+Después de realizar la refactorización se ejecutaron diferentes pruebas funcionales desde Swagger, verificando tanto la creación correcta de citas como las validaciones implementadas previamente. Los resultados confirmaron que el comportamiento del sistema se mantiene intacto.
+
+También se definió la estrategia para la siguiente fase del proyecto, la cual consistirá en implementar la capa Repository con el fin de separar completamente el acceso a la base de datos de la lógica de negocio.
+
+Esta evolución permitirá que Agenda 360 adopte una arquitectura más limpia, escalable y fácil de mantener antes de comenzar el desarrollo del frontend.

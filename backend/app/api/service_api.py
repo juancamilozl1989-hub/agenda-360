@@ -49,6 +49,20 @@ def crear_servicio(
             detail="Barbero no encontrado"
         )
 
+    # Validar que el precio sea mayor que cero
+    if datos.precio <= 0:
+        raise HTTPException(
+            status_code=400,
+            detail="El precio del servicio debe ser mayor que cero."
+        )
+        
+    # Validar que la duración sea mayor que cero
+    if datos.duracion <= 0:
+        raise HTTPException(
+            status_code=400,
+            detail="La duración del servicio debe ser mayor que cero."
+        )
+
     # Crear el servicio
     servicio = Service(
         nombre=datos.nombre,
@@ -136,6 +150,20 @@ def actualizar_servicio(
         raise HTTPException(
             status_code=404,
             detail="Barbero no encontrado"
+        )
+
+    # Validar que el precio sea mayor que cero
+    if datos.precio <= 0:
+        raise HTTPException(
+            status_code=400,
+            detail="El precio del servicio debe ser mayor que cero."
+        )
+
+    # Validar que la duración sea mayor que cero
+    if datos.duracion <= 0:
+        raise HTTPException(
+            status_code=400,
+            detail="La duración del servicio debe ser mayor que cero."
         )
 
     servicio.nombre = datos.nombre

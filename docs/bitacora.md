@@ -321,3 +321,30 @@ Se verificó correctamente:
 ### Resultado
 
 El módulo de citas quedó protegido contra las principales inconsistencias de negocio tanto en el endpoint de creación como en el de actualización.
+
+## Fecha: 21 de julio de 2026
+
+### Actividades realizadas
+
+- Se inició la implementación de la capa de servicios (Services) para el módulo de citas.
+- Se creó el archivo `appointment_service.py`.
+- Se trasladó la lógica del endpoint `POST /appointments` desde el router hacia la capa de servicios.
+- Se verificó el correcto funcionamiento del endpoint mediante pruebas en Swagger.
+- Se confirmó que las validaciones de negocio continúan funcionando correctamente después de la refactorización:
+  - No permitir citas en fechas pasadas.
+  - Validación de cliente existente.
+  - Validación de barbero existente.
+  - Validación de servicio existente.
+  - Validación de correspondencia entre servicio y barbero.
+  - Prevención de citas duplicadas.
+- Se definió la estrategia de refactorización para continuar separando la lógica de negocio del acceso a datos mediante la futura implementación de la capa Repository.
+
+### Estado del proyecto
+
+La primera migración hacia una arquitectura por capas fue exitosa. El endpoint de creación de citas ya utiliza la nueva capa de servicios sin afectar el funcionamiento del sistema.
+
+### Próximas actividades
+
+- Crear la capa Repository para el módulo de citas.
+- Refactorizar el resto del CRUD de citas utilizando Services y Repositories.
+- Preparar el backend para iniciar el desarrollo del frontend.
