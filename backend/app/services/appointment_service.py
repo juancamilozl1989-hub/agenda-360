@@ -9,9 +9,9 @@ from sqlalchemy.orm import Session
 
 # Modelos
 from app.models.appointment_model import Appointment
-from app.models.client_model import Client
-from app.models.barber_model import Barber
-from app.models.service_model import Service
+
+# Repository
+from app.repositories import appointment_repository
 
 # Schemas
 from app.schemas.appointment_schema import AppointmentCreate
@@ -36,9 +36,10 @@ def crear_cita(
         )
 
     # Verificar cliente
-    cliente = db.query(Client).filter(
-        Client.id == datos.client_id
-    ).first()
+    cliente = appointment_repository.obtener_cliente(
+        datos.client_id,
+        db
+    )
 
     if cliente is None:
         raise HTTPException(
@@ -47,9 +48,10 @@ def crear_cita(
         )
 
     # Verificar barbero
-    barbero = db.query(Barber).filter(
-        Barber.id == datos.barber_id
-    ).first()
+    barbero = appointment_repository.obtener_barbero(
+        datos.barber_id,
+        db
+    )
 
     if barbero is None:
         raise HTTPException(
@@ -58,9 +60,10 @@ def crear_cita(
         )
 
     # Verificar servicio
-    servicio = db.query(Service).filter(
-        Service.id == datos.service_id
-    ).first()
+    servicio = appointment_repository.obtener_servicio(
+        datos.service_id,
+        db
+    )
 
     if servicio is None:
         raise HTTPException(
@@ -75,12 +78,13 @@ def crear_cita(
             detail="El servicio seleccionado no pertenece al barbero."
         )
 
-    # Verificar citas duplicadas
-    cita_existente = db.query(Appointment).filter(
-        Appointment.barber_id == datos.barber_id,
-        Appointment.fecha == datos.fecha,
-        Appointment.hora == datos.hora
-    ).first()
+    # Verificar cita duplicada
+    cita_existente = appointment_repository.obtener_cita_duplicada(
+        datos.barber_id,
+        datos.fecha,
+        datos.hora,
+        db
+    )
 
     if cita_existente:
         raise HTTPException(
@@ -88,7 +92,7 @@ def crear_cita(
             detail="El barbero ya tiene una cita programada para esa fecha y hora."
         )
 
-    # Crear cita
+    # Crear objeto
     cita = Appointment(
         fecha=datos.fecha,
         hora=datos.hora,
@@ -97,17 +101,19 @@ def crear_cita(
         service_id=datos.service_id
     )
 
-    db.add(cita)
-    db.commit()
-    db.refresh(cita)
-
-    return cita
+    # Guardar mediante Repository
+    return appointment_repository.guardar_cita(
+        cita,
+        db
+    )
 
 
 # ==========================================
 # Obtener todas las citas
 # ==========================================
-def obtener_citas(db: Session):
+def obtener_citas(
+    db: Session
+):
     """
     Obtener todas las citas.
     """

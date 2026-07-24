@@ -348,3 +348,25 @@ La primera migración hacia una arquitectura por capas fue exitosa. El endpoint 
 - Crear la capa Repository para el módulo de citas.
 - Refactorizar el resto del CRUD de citas utilizando Services y Repositories.
 - Preparar el backend para iniciar el desarrollo del frontend.
+
+## Fecha: 23/07/2026
+
+## ctividades realizadas
+
+Se inició oficialmente el desarrollo del frontend de Agenda 360 utilizando React, TypeScript y Vite.
+Se instalaron las librerías principales del proyecto:
+Material UI
+Emotion
+React Router DOM
+Axios
+React Hook Form
+React Icons
+Se definió la estructura profesional de carpetas del frontend siguiendo buenas prácticas de desarrollo.
+Se creó el archivo theme.ts para centralizar la configuración visual de la aplicación mediante Material UI.
+Se reemplazó la plantilla inicial de Vite por una primera pantalla personalizada de Agenda 360.
+Se estableció la identidad visual inicial basada en colores negro, dorado y blanco.
+Se analizaron referencias gráficas de la Barbería Juanda para utilizarlas como guía durante el diseño de la interfaz de usuario.
+
+## Resultado
+
+El frontend quedó completamente preparado para comenzar el desarrollo de las pantallas funcionales del sistema.

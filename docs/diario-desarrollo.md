@@ -194,3 +194,13 @@ Después de realizar la refactorización se ejecutaron diferentes pruebas funcio
 También se definió la estrategia para la siguiente fase del proyecto, la cual consistirá en implementar la capa Repository con el fin de separar completamente el acceso a la base de datos de la lógica de negocio.
 
 Esta evolución permitirá que Agenda 360 adopte una arquitectura más limpia, escalable y fácil de mantener antes de comenzar el desarrollo del frontend.
+
+## Fecha: 23/07/2026
+
+Durante esta sesión se dio inicio al desarrollo del frontend del proyecto Agenda 360. Se configuró el entorno de trabajo utilizando React con TypeScript y se instalaron las dependencias necesarias para la construcción de la interfaz de usuario.
+
+Posteriormente se organizó la estructura de carpetas del proyecto siguiendo una arquitectura escalable que facilitará el crecimiento de la aplicación.
+
+También se creó una primera versión de la pantalla principal, reemplazando la plantilla predeterminada de Vite por una vista personalizada con la identidad del proyecto.
+
+Finalmente se revisó el material gráfico real de la Barbería Juanda, el cual servirá como referencia para mantener una línea visual consistente durante todo el desarrollo del sistema.
