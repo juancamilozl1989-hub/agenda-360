@@ -204,3 +204,15 @@ Posteriormente se organizó la estructura de carpetas del proyecto siguiendo una
 También se creó una primera versión de la pantalla principal, reemplazando la plantilla predeterminada de Vite por una vista personalizada con la identidad del proyecto.
 
 Finalmente se revisó el material gráfico real de la Barbería Juanda, el cual servirá como referencia para mantener una línea visual consistente durante todo el desarrollo del sistema.
+
+## 24 de julio de 2026
+
+Durante esta jornada se continuó el desarrollo del frontend de Agenda 360.
+
+Inicialmente se realizaron mejoras visuales sobre la pantalla de autenticación, incorporando una distribución moderna de dos paneles, una imagen representativa del entorno de barbería y una identidad visual basada en tonos negros y dorados.
+
+Posteriormente se desarrolló el primer componente reutilizable del proyecto denominado `CustomTextField`, cuyo objetivo es centralizar la configuración visual de todos los campos de entrada que utilizará la aplicación.
+
+Durante el proceso se identificaron y solucionaron incompatibilidades derivadas de la integración entre React 19, Material UI 7 y TypeScript 6, relacionadas principalmente con el tipado de las propiedades del componente `TextField`. Finalmente se adaptó el componente utilizando una definición de tipos compatible con la versión actual del entorno de desarrollo.
+
+Con esta implementación se establece una base reutilizable para los formularios de Clientes, Barberos, Servicios, Citas y Usuarios, reduciendo la duplicación de código y facilitando el mantenimiento del proyecto.

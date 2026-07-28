@@ -370,3 +370,16 @@ Se analizaron referencias gráficas de la Barbería Juanda para utilizarlas como
 ## Resultado
 
 El frontend quedó completamente preparado para comenzar el desarrollo de las pantallas funcionales del sistema.
+
+## 24 de julio de 2026
+
+### Desarrollo Frontend
+
+- Se continuó el desarrollo del frontend utilizando React, Vite, TypeScript y Material UI.
+- Se mejoró el diseño visual de la pantalla de inicio de sesión con una distribución de dos paneles.
+- Se incorporó una imagen representativa de barbería con superposición oscura para mejorar la legibilidad del contenido.
+- Se agregaron iconos representativos para las funcionalidades principales del sistema (Agenda, Clientes y Servicios).
+- Se rediseñó el formulario de autenticación utilizando la identidad visual del proyecto basada en colores negro y dorado.
+- Se implementó el primer componente reutilizable del proyecto (`CustomTextField`) para unificar el diseño de los campos de texto.
+- Se resolvieron incompatibilidades entre React 19, Material UI 7 y TypeScript 6 relacionadas con la definición de tipos (`TextFieldProps`).
+- Se integró correctamente el componente `CustomTextField` dentro del formulario de inicio de sesión.
