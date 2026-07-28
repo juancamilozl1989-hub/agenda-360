@@ -216,3 +216,26 @@ Posteriormente se desarrolló el primer componente reutilizable del proyecto den
 Durante el proceso se identificaron y solucionaron incompatibilidades derivadas de la integración entre React 19, Material UI 7 y TypeScript 6, relacionadas principalmente con el tipado de las propiedades del componente `TextField`. Finalmente se adaptó el componente utilizando una definición de tipos compatible con la versión actual del entorno de desarrollo.
 
 Con esta implementación se establece una base reutilizable para los formularios de Clientes, Barberos, Servicios, Citas y Usuarios, reduciendo la duplicación de código y facilitando el mantenimiento del proyecto.
+
+# Diario - 27/07/2026
+
+Hoy se trabajó en la construcción del Dashboard principal del sistema Agenda 360.
+
+Se implementó una arquitectura basada en componentes reutilizables utilizando React, TypeScript y Material UI.
+
+Durante el desarrollo se realizaron ajustes en la organización del proyecto, separando correctamente layouts, páginas y componentes.
+
+Se construyeron los siguientes elementos:
+
+- Sidebar
+- Header
+- DashboardLayout
+- DashboardPage
+- StatCard
+- WeeklyIncomeChart
+- UpcomingAppointments
+- TopServices
+
+El Dashboard ya presenta una apariencia muy cercana a un sistema comercial real.
+
+También se dejó preparada la estructura para comenzar el módulo Agenda en la siguiente sesión.

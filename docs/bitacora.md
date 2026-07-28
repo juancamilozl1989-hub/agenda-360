@@ -383,3 +383,20 @@ El frontend quedó completamente preparado para comenzar el desarrollo de las pa
 - Se implementó el primer componente reutilizable del proyecto (`CustomTextField`) para unificar el diseño de los campos de texto.
 - Se resolvieron incompatibilidades entre React 19, Material UI 7 y TypeScript 6 relacionadas con la definición de tipos (`TextFieldProps`).
 - Se integró correctamente el componente `CustomTextField` dentro del formulario de inicio de sesión.
+
+# 27/07/2026
+
+## Avances realizados
+
+- Se organizó la arquitectura del Dashboard.
+- Se creó el DashboardLayout para reutilizar la estructura principal.
+- Se implementó un Sidebar profesional.
+- Se implementó un Header con buscador, notificaciones y perfil de usuario.
+- Se desarrolló el Dashboard principal.
+- Se crearon tarjetas estadísticas reutilizables mediante el componente StatCard.
+- Se añadieron componentes visuales:
+  - WeeklyIncomeChart
+  - UpcomingAppointments
+  - TopServices
+- Se organizó la estructura de carpetas del frontend para facilitar la escalabilidad.
+- Se dejó preparado el proyecto para iniciar el módulo Agenda.
