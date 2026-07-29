@@ -1,10 +1,10 @@
 import DashboardLayout from "./layouts/DashboardLayout";
-import DashboardPage from "./pages/Dashboard/DashboardPage";
+import AgendaPage from "./pages/Agenda/AgendaPage";
 
 function App() {
   return (
     <DashboardLayout>
-      <DashboardPage />
+      <AgendaPage />
     </DashboardLayout>
   );
 }

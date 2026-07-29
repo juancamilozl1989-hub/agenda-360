@@ -239,3 +239,32 @@ Se construyeron los siguientes elementos:
 El Dashboard ya presenta una apariencia muy cercana a un sistema comercial real.
 
 También se dejó preparada la estructura para comenzar el módulo Agenda en la siguiente sesión.
+
+# Diario de desarrollo - 28/07/2026
+
+## Objetivo
+
+Comenzar la construcción del módulo Agenda siguiendo una arquitectura modular y reutilizable.
+
+## Desarrollo realizado
+
+Durante esta sesión se diseñó la estructura inicial del módulo Agenda.
+
+Se desarrolló el componente `AppointmentCard`, encargado de representar visualmente cada cita mediante una tarjeta con la información del cliente, servicio, barbero y estado.
+
+Posteriormente se creó el componente `AppointmentStatus`, con el propósito de centralizar la representación visual de los estados de las citas (Confirmada, Pendiente y Finalizada), facilitando el mantenimiento del código.
+
+También se implementó el componente `TimeLine`, encargado de renderizar múltiples citas reutilizando `AppointmentCard`.
+
+Finalmente se integró la Agenda dentro de `AgendaPage`, incorporando un encabezado, pestañas de navegación y el botón para crear nuevas citas.
+
+## Resultado
+
+Se obtuvo la primera versión funcional del módulo Agenda con una arquitectura basada en componentes reutilizables, preparada para evolucionar hacia una agenda profesional y para integrarse posteriormente con FastAPI y PostgreSQL.
+
+## Próxima sesión
+
+- Configurar React Router de forma profesional.
+- Implementar navegación entre módulos.
+- Conectar Sidebar con las rutas.
+- Preparar la estructura para autenticación mediante login.

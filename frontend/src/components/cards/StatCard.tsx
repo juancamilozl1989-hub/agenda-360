@@ -16,58 +16,75 @@ export default function StatCard({
 }: StatCardProps) {
   return (
     <Card
+      elevation={0}
       sx={{
-        borderRadius: 4,
+        height: 140,
+        borderRadius: 5,
         bgcolor: "#1E1E1E",
         color: "#FFFFFF",
         border: "1px solid rgba(255,255,255,.08)",
-        transition: ".3s",
+        transition: "all .35s ease",
+        cursor: "pointer",
 
         "&:hover": {
-          transform: "translateY(-5px)",
-          boxShadow: "0px 12px 30px rgba(0,0,0,.35)",
+          transform: "translateY(-6px)",
+          boxShadow: "0 20px 40px rgba(0,0,0,.45)",
+          borderColor: "rgba(212,175,55,.35)",
         },
       }}
     >
-      <CardContent>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Box>
-            <Typography
-              variant="body2"
-              color="#BDBDBD"
-            >
-              {title}
-            </Typography>
-
-            <Typography
-              variant="h4"
-              fontWeight="bold"
-              mt={1}
-            >
-              {value}
-            </Typography>
-          </Box>
-
-          <Box
+      <CardContent
+        sx={{
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          px: 3,
+        }}
+      >
+        <Box>
+          <Typography
+            variant="body2"
             sx={{
-              width: 56,
-              height: 56,
-              borderRadius: "50%",
-              bgcolor: color,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              color: "#FFF",
+              color: "#9E9E9E",
+              fontWeight: 500,
+              letterSpacing: 0.5,
             }}
           >
-            {icon}
-          </Box>
+            {title}
+          </Typography>
+
+          <Typography
+            variant="h4"
+            sx={{
+              mt: 1.5,
+              fontWeight: 700,
+            }}
+          >
+            {value}
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            width: 68,
+            height: 68,
+            borderRadius: "50%",
+            bgcolor: color,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            color: "#FFF",
+            fontSize: 32,
+            boxShadow: `0 8px 20px ${color}55`,
+            transition: ".3s",
+
+            "& svg": {
+              fontSize: 34,
+            },
+          }}
+        >
+          {icon}
         </Box>
       </CardContent>
     </Card>

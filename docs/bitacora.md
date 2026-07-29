@@ -400,3 +400,26 @@ El frontend quedó completamente preparado para comenzar el desarrollo de las pa
   - TopServices
 - Se organizó la estructura de carpetas del frontend para facilitar la escalabilidad.
 - Se dejó preparado el proyecto para iniciar el módulo Agenda.
+
+## 28/07/2026
+
+### Módulo: Agenda de Citas
+
+Se inició el desarrollo del módulo Agenda, implementando una arquitectura basada en componentes reutilizables.
+
+### Actividades realizadas
+
+- Creación del componente `AppointmentCard`.
+- Creación del componente `TimeLine`.
+- Creación del componente `AppointmentStatus`.
+- Integración de los componentes dentro de `AgendaPage`.
+- Implementación del botón "Nueva cita".
+- Diseño inicial de la vista Agenda utilizando Material UI.
+- Mejora de la reutilización de componentes para facilitar futuras integraciones con la API.
+- Organización de la estructura del módulo Agenda siguiendo la arquitectura del proyecto.
+
+### Estado
+
+✅ Funcional.
+
+La Agenda muestra correctamente las citas de ejemplo utilizando componentes reutilizables. El módulo queda preparado para recibir información desde el backend en futuras etapas.

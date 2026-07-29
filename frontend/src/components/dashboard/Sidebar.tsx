@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   List,
   ListItemButton,
@@ -60,7 +61,6 @@ export default function Sidebar() {
       }}
     >
       {/* Logo */}
-
       <Box
         sx={{
           p: 4,
@@ -84,20 +84,38 @@ export default function Sidebar() {
       </Box>
 
       {/* Menú */}
-
       <List sx={{ mt: 2 }}>
-
         {menuItems.map((item, index) => (
-
           <ListItemButton
             key={index}
+            selected={item.text === "Dashboard"}
             sx={{
               mx: 2,
               mb: 1,
               borderRadius: 3,
+              transition: "all .3s",
+
+              bgcolor:
+                item.text === "Dashboard"
+                  ? "rgba(212,175,55,.18)"
+                  : "transparent",
+
+              border:
+                item.text === "Dashboard"
+                  ? "1px solid rgba(212,175,55,.35)"
+                  : "1px solid transparent",
 
               "&:hover": {
                 bgcolor: "rgba(212,175,55,.15)",
+                transform: "translateX(4px)",
+              },
+
+              "&.Mui-selected": {
+                bgcolor: "rgba(212,175,55,.18)",
+              },
+
+              "&.Mui-selected:hover": {
+                bgcolor: "rgba(212,175,55,.25)",
               },
             }}
           >
@@ -110,35 +128,50 @@ export default function Sidebar() {
               {item.icon}
             </ListItemIcon>
 
-            <ListItemText
-              primary={item.text}
-            />
-
+            <ListItemText primary={item.text} />
           </ListItemButton>
-
         ))}
-
       </List>
 
       {/* Usuario */}
-
       <Box
         sx={{
           mt: "auto",
           p: 3,
           borderTop: "1px solid rgba(255,255,255,.08)",
+          display: "flex",
+          alignItems: "center",
+          gap: 2,
         }}
       >
-        <Typography fontWeight="bold">
-          Juan Camilo
-        </Typography>
-
-        <Typography
-          variant="body2"
-          color="#AAA"
+        <Avatar
+          sx={{
+            width: 48,
+            height: 48,
+            bgcolor: "#2A2A2A",
+            color: "#D4AF37",
+            border: "2px solid #D4AF37",
+            fontWeight: "bold",
+          }}
         >
-          Administrador
-        </Typography>
+          C
+        </Avatar>
+
+        <Box>
+          <Typography
+            fontWeight="bold"
+            color="#FFF"
+          >
+            Juan Camilo
+          </Typography>
+
+          <Typography
+            variant="body2"
+            color="#AAA"
+          >
+            Administrador
+          </Typography>
+        </Box>
       </Box>
     </Box>
   );
