@@ -1,12 +1,7 @@
-import DashboardLayout from "./layouts/DashboardLayout";
-import AgendaPage from "./pages/Agenda/AgendaPage";
+import AppRoutes from "./routes/AppRoutes";
 
 function App() {
-  return (
-    <DashboardLayout>
-      <AgendaPage />
-    </DashboardLayout>
-  );
+  return <AppRoutes />;
 }
 
 export default App;

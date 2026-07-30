@@ -423,3 +423,25 @@ Se inició el desarrollo del módulo Agenda, implementando una arquitectura basa
 ✅ Funcional.
 
 La Agenda muestra correctamente las citas de ejemplo utilizando componentes reutilizables. El módulo queda preparado para recibir información desde el backend en futuras etapas.
+
+## 29 de julio de 2026
+
+## Actividades realizadas
+Se configuró React Router como sistema principal de navegación.
+Se integró DashboardLayout dentro de las rutas protegidas.
+Se crearon las páginas base:
+Dashboard
+Agenda
+Clientes
+Servicios
+Barberos
+Reportes
+Se implementó la navegación del Sidebar utilizando NavLink y useLocation.
+Se añadió el resaltado automático de la opción activa del menú lateral.
+Se creó el componente reutilizable PageHeader.
+Se desarrolló el módulo visual de Clientes.
+Se creó el componente reutilizable DataTable.
+Se refactorizó ClientesPage para utilizar DataTable, mejorando la reutilización del código.
+Resultado
+
+Agenda 360 ahora cuenta con una estructura modular, navegación funcional entre páginas y componentes reutilizables que servirán como base para el desarrollo de los próximos módulos.

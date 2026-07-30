@@ -268,3 +268,15 @@ Se obtuvo la primera versión funcional del módulo Agenda con una arquitectura 
 - Implementar navegación entre módulos.
 - Conectar Sidebar con las rutas.
 - Preparar la estructura para autenticación mediante login.
+
+## Día de desarrollo 29/07/2026
+
+Durante esta sesión se consolidó la arquitectura del Frontend de Agenda 360.
+
+El proyecto dejó de utilizar páginas individuales renderizadas directamente y pasó a implementar una navegación profesional mediante React Router.
+
+Se construyeron componentes reutilizables (PageHeader y DataTable) que permitirán reducir considerablemente la duplicación de código en los módulos de Clientes, Barberos, Servicios y Reportes.
+
+También se implementó un Sidebar completamente funcional con navegación dinámica y detección automática de la ruta activa, mejorando la experiencia de usuario.
+
+El módulo de Clientes quedó preparado para evolucionar posteriormente hacia un CRUD conectado con FastAPI y PostgreSQL.

@@ -16,38 +16,49 @@ import PersonIcon from "@mui/icons-material/Person";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import SettingsIcon from "@mui/icons-material/Settings";
 
+import { NavLink, useLocation } from "react-router-dom";
+
 const menuItems = [
   {
     text: "Dashboard",
+    path: "/dashboard",
     icon: <DashboardIcon />,
   },
   {
     text: "Agenda",
+    path: "/agenda",
     icon: <EventAvailableIcon />,
   },
   {
     text: "Clientes",
+    path: "/clientes",
     icon: <GroupsIcon />,
   },
   {
     text: "Servicios",
+    path: "/servicios",
     icon: <ContentCutIcon />,
   },
   {
     text: "Barberos",
+    path: "/barberos",
     icon: <PersonIcon />,
   },
   {
     text: "Reportes",
+    path: "/reportes",
     icon: <AssessmentIcon />,
   },
   {
     text: "Configuración",
+    path: "/configuracion",
     icon: <SettingsIcon />,
   },
 ];
 
 export default function Sidebar() {
+  const location = useLocation();
+
   return (
     <Box
       sx={{
@@ -61,6 +72,7 @@ export default function Sidebar() {
       }}
     >
       {/* Logo */}
+
       <Box
         sx={{
           p: 4,
@@ -84,56 +96,62 @@ export default function Sidebar() {
       </Box>
 
       {/* Menú */}
-      <List sx={{ mt: 2 }}>
-        {menuItems.map((item, index) => (
-          <ListItemButton
-            key={index}
-            selected={item.text === "Dashboard"}
-            sx={{
-              mx: 2,
-              mb: 1,
-              borderRadius: 3,
-              transition: "all .3s",
 
-              bgcolor:
-                item.text === "Dashboard"
+      <List sx={{ mt: 2 }}>
+        {menuItems.map((item) => {
+          const active = location.pathname === item.path;
+
+          return (
+            <ListItemButton
+              key={item.text}
+              component={NavLink}
+              to={item.path}
+              selected={active}
+              sx={{
+                mx: 2,
+                mb: 1,
+                borderRadius: 3,
+                transition: "all .3s",
+
+                bgcolor: active
                   ? "rgba(212,175,55,.18)"
                   : "transparent",
 
-              border:
-                item.text === "Dashboard"
+                border: active
                   ? "1px solid rgba(212,175,55,.35)"
                   : "1px solid transparent",
 
-              "&:hover": {
-                bgcolor: "rgba(212,175,55,.15)",
-                transform: "translateX(4px)",
-              },
+                "&:hover": {
+                  bgcolor: "rgba(212,175,55,.15)",
+                  transform: "translateX(4px)",
+                },
 
-              "&.Mui-selected": {
-                bgcolor: "rgba(212,175,55,.18)",
-              },
+                "&.Mui-selected": {
+                  bgcolor: "rgba(212,175,55,.18)",
+                },
 
-              "&.Mui-selected:hover": {
-                bgcolor: "rgba(212,175,55,.25)",
-              },
-            }}
-          >
-            <ListItemIcon
-              sx={{
-                color: "#D4AF37",
-                minWidth: 40,
+                "&.Mui-selected:hover": {
+                  bgcolor: "rgba(212,175,55,.25)",
+                },
               }}
             >
-              {item.icon}
-            </ListItemIcon>
+              <ListItemIcon
+                sx={{
+                  color: "#D4AF37",
+                  minWidth: 40,
+                }}
+              >
+                {item.icon}
+              </ListItemIcon>
 
-            <ListItemText primary={item.text} />
-          </ListItemButton>
-        ))}
+              <ListItemText primary={item.text} />
+            </ListItemButton>
+          );
+        })}
       </List>
 
       {/* Usuario */}
+
       <Box
         sx={{
           mt: "auto",
