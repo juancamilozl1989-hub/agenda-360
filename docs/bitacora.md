@@ -445,3 +445,15 @@ Se refactorizó ClientesPage para utilizar DataTable, mejorando la reutilizació
 Resultado
 
 Agenda 360 ahora cuenta con una estructura modular, navegación funcional entre páginas y componentes reutilizables que servirán como base para el desarrollo de los próximos módulos.
+
+## Fecha: 02/08/2026
+
+Actividades realizadas:
+
+- Se completó el módulo de Clientes.
+- Se implementó la edición de clientes reutilizando el mismo formulario.
+- Se desarrolló un componente global AppSnackbar para mostrar notificaciones.
+- Se desarrolló un componente global ConfirmDialog para confirmar eliminaciones.
+- Se implementó la eliminación de clientes con confirmación.
+- Se agregó búsqueda dinámica por nombre, teléfono y correo.
+- Se dejó el módulo completamente funcional utilizando componentes reutilizables.

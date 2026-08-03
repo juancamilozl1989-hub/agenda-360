@@ -11,6 +11,7 @@ import type { ReactNode } from "react";
 interface Column {
   field: string;
   headerName: string;
+  render?: (value: any, row: any) => ReactNode;
 }
 
 interface DataTableProps {
@@ -49,11 +50,13 @@ export default function DataTable({
         </TableHead>
 
         <TableBody>
-          {rows.map((row, index) => (
-            <TableRow key={index} hover>
+          {rows.map((row) => (
+            <TableRow key={row.id} hover>
               {columns.map((column) => (
                 <TableCell key={column.field}>
-                  {row[column.field]}
+                  {column.render
+                    ? column.render(row[column.field], row)
+                    : row[column.field]}
                 </TableCell>
               ))}
 
