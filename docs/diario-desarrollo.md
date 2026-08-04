@@ -271,7 +271,7 @@ Se obtuvo la primera versión funcional del módulo Agenda con una arquitectura 
 
 ## Día de desarrollo 29/07/2026
 
-Durante esta sesión se consolidó la arquitectura del Frontend de Agenda 360.
+## Durante esta sesión se consolidó la arquitectura del Frontend de Agenda 360.
 
 El proyecto dejó de utilizar páginas individuales renderizadas directamente y pasó a implementar una navegación profesional mediante React Router.
 
@@ -280,6 +280,8 @@ Se construyeron componentes reutilizables (PageHeader y DataTable) que permitir�
 También se implementó un Sidebar completamente funcional con navegación dinámica y detección automática de la ruta activa, mejorando la experiencia de usuario.
 
 El módulo de Clientes quedó preparado para evolucionar posteriormente hacia un CRUD conectado con FastAPI y PostgreSQL.
+
+## Día de desarrollo 02/08/2026
 
 ## Durante esta sesión se finalizó el módulo de Clientes del sistema Agenda 360.
 
@@ -290,3 +292,11 @@ Se desarrollaron dos componentes reutilizables (AppSnackbar y ConfirmDialog), lo
 Finalmente se incorporó una búsqueda dinámica en tiempo real, permitiendo filtrar clientes por nombre, teléfono o correo electrónico.
 
 El módulo quedó preparado para ser conectado posteriormente al backend desarrollado en FastAPI.
+
+## Día de desarrollo 03/08/2026
+
+## Durante esta sesión se desarrollaron completamente los módulos de Barberos y Servicios.
+
+Se reutilizaron los componentes creados anteriormente (DataTable, ConfirmDialog, AppSnackbar y PageHeader), permitiendo mantener una arquitectura consistente y reducir la duplicación de código.
+
+Los módulos implementan operaciones CRUD completas, búsqueda dinámica y notificaciones visuales, dejando preparada la aplicación para la siguiente fase de integración con el backend desarrollado en FastAPI y PostgreSQL.

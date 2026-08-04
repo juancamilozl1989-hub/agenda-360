@@ -457,3 +457,17 @@ Actividades realizadas:
 - Se implementó la eliminación de clientes con confirmación.
 - Se agregó búsqueda dinámica por nombre, teléfono y correo.
 - Se dejó el módulo completamente funcional utilizando componentes reutilizables.
+
+## Fecha: 03/08/2026
+
+Actividades realizadas:
+
+- Se desarrolló el CRUD completo del módulo de Barberos.
+- Se implementó el formulario reutilizable BarberoFormModal.
+- Se agregó búsqueda dinámica.
+- Se incorporó ConfirmDialog y AppSnackbar al módulo.
+- Se desarrolló el CRUD completo del módulo de Servicios.
+- Se implementó ServicioFormModal reutilizable.
+- Se añadió búsqueda por nombre y categoría.
+- Se mostró el precio en formato COP y la duración en minutos.
+- Se mantuvo la arquitectura reutilizable del proyecto.
