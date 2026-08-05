@@ -55,7 +55,7 @@ def crear_servicio(
             status_code=400,
             detail="El precio del servicio debe ser mayor que cero."
         )
-        
+
     # Validar que la duración sea mayor que cero
     if datos.duracion <= 0:
         raise HTTPException(
@@ -66,9 +66,11 @@ def crear_servicio(
     # Crear el servicio
     servicio = Service(
         nombre=datos.nombre,
+        categoria=datos.categoria,
         descripcion=datos.descripcion,
         precio=datos.precio,
         duracion=datos.duracion,
+        estado=datos.estado,
         barber_id=datos.barber_id
     )
 
@@ -78,6 +80,7 @@ def crear_servicio(
     db.refresh(servicio)
 
     return servicio
+
 
 # ==========================================
 # Listar todos los servicios
@@ -93,6 +96,7 @@ def listar_servicios(
     servicios = db.query(Service).all()
 
     return servicios
+
 
 # ==========================================
 # Obtener un servicio por ID
@@ -117,6 +121,7 @@ def obtener_servicio(
         )
 
     return servicio
+
 
 # ==========================================
 # Actualizar un servicio
@@ -167,15 +172,18 @@ def actualizar_servicio(
         )
 
     servicio.nombre = datos.nombre
+    servicio.categoria = datos.categoria
     servicio.descripcion = datos.descripcion
     servicio.precio = datos.precio
     servicio.duracion = datos.duracion
+    servicio.estado = datos.estado
     servicio.barber_id = datos.barber_id
 
     db.commit()
     db.refresh(servicio)
 
     return servicio
+
 
 # ==========================================
 # Eliminar un servicio

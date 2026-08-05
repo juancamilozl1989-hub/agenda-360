@@ -21,14 +21,36 @@ class Service(Base):
     # Nombre del servicio
     nombre = Column(String(100), nullable=False)
 
+    # Categoría
+    categoria = Column(
+        String(50),
+        nullable=False
+    )
+
     # Descripción
-    descripcion = Column(String(255), nullable=False)
+    descripcion = Column(
+        String(255),
+        nullable=False
+    )
 
     # Precio
-    precio = Column(Float, nullable=False)
+    precio = Column(
+        Float,
+        nullable=False
+    )
 
     # Duración en minutos
-    duracion = Column(Integer, nullable=False)
+    duracion = Column(
+        Integer,
+        nullable=False
+    )
+
+    # Estado
+    estado = Column(
+        String(20),
+        nullable=False,
+        default="Activo"
+    )
 
     # Relación con el barbero
     barber_id = Column(
@@ -36,16 +58,16 @@ class Service(Base):
         ForeignKey("barbers.id"),
         nullable=False
     )
-    
-        # Relación ORM
+
+    # Relación ORM
     barber = relationship(
         "Barber",
         back_populates="services"
     )
-    
-    # Citas del servicio
+
+    # Citas asociadas al servicio
     appointments = relationship(
         "Appointment",
         back_populates="service",
         cascade="all, delete-orphan"
-)
+    )

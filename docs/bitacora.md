@@ -471,3 +471,26 @@ Actividades realizadas:
 - Se añadió búsqueda por nombre y categoría.
 - Se mostró el precio en formato COP y la duración en minutos.
 - Se mantuvo la arquitectura reutilizable del proyecto.
+
+
+## Fecha: 04/08/2026
+
+### Actividades realizadas
+
+- Se revisó la arquitectura actual del backend para identificar el estado real del proyecto.
+- Se verificó la estructura de carpetas del módulo `api`, evitando crear archivos duplicados.
+- Se actualizaron los modelos, esquemas y endpoints del módulo de Clientes incorporando el campo `estado`.
+- Se actualizaron los modelos, esquemas y endpoints del módulo de Barberos incorporando los campos `especialidad` y `estado`.
+- Se actualizaron los modelos, esquemas y endpoints del módulo de Servicios incorporando los campos `categoria` y `estado`.
+- Se verificó la coherencia entre modelos, schemas y APIs para garantizar que todos utilizaran la misma estructura de datos.
+- Se definió una nueva metodología de trabajo basada en revisar primero el código existente antes de implementar nuevas funcionalidades.
+
+### Resultado
+
+Los módulos de Clientes, Barberos y Servicios quedaron completamente sincronizados entre modelos, esquemas y endpoints del backend.
+
+### Próximas actividades
+
+- Revisar el módulo de Horarios (Schedules).
+- Revisar el módulo de Citas (Appointments).
+- Iniciar la integración entre React, FastAPI y PostgreSQL.

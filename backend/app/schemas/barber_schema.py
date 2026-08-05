@@ -13,6 +13,8 @@ class BarberCreate(BaseModel):
 
     nombre: str
     telefono: str
+    especialidad: str
+    estado: str = "Activo"
     barbershop_id: int
 
 
@@ -27,8 +29,11 @@ class BarberUpdate(BaseModel):
 
     nombre: str
     telefono: str
+    especialidad: str
+    estado: str
     barbershop_id: int
-    
+
+
 # ==========================================
 # Información resumida del barbero
 # ==========================================
@@ -56,6 +61,8 @@ class BarberResponse(BaseModel):
     id: int
     nombre: str
     telefono: str
+    especialidad: str
+    estado: str
 
     barbershop: BarbershopSimple
 

@@ -23,6 +23,19 @@ class Barber(Base):
 
     # Teléfono
     telefono = Column(String(20), nullable=False)
+    
+    # Especialidad
+    especialidad = Column(
+        String(100),
+        nullable=False
+    )
+    
+    # Estado
+    estado = Column(
+    String(20),
+    nullable=False,
+    default="Activo"
+    )
 
     # Relación con la barbería
     barbershop_id = Column(

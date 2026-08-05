@@ -31,6 +31,13 @@ class Barbershop(Base):
     # Correo electrónico
     email = Column(String(150), nullable=False)
     
+    # Estado de la barbería
+    estado = Column(
+        String(20),
+        nullable=False,
+        default="Activa"
+    )
+    
     # Lista de barberos que pertenecen a esta barbería
     barbers = relationship(
         "Barber",

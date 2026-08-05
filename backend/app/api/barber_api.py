@@ -52,6 +52,8 @@ def crear_barbero(
     nuevo_barbero = Barber(
         nombre=barbero.nombre,
         telefono=barbero.telefono,
+        especialidad=barbero.especialidad,
+        estado=barbero.estado,
         barbershop_id=barbero.barbershop_id
     )
 
@@ -141,6 +143,8 @@ def actualizar_barbero(
     # Actualizar los datos
     barbero.nombre = datos.nombre
     barbero.telefono = datos.telefono
+    barbero.especialidad = datos.especialidad
+    barbero.estado = datos.estado
     barbero.barbershop_id = datos.barbershop_id
 
     db.commit()

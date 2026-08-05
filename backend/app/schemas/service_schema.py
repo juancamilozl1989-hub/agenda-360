@@ -13,9 +13,11 @@ class ServiceCreate(BaseModel):
     """
 
     nombre: str
+    categoria: str
     descripcion: str
     precio: float
     duracion: int
+    estado: str = "Activo"
     barber_id: int
 
 
@@ -29,9 +31,11 @@ class ServiceUpdate(BaseModel):
     """
 
     nombre: str
+    categoria: str
     descripcion: str
     precio: float
     duracion: int
+    estado: str
     barber_id: int
 
 
@@ -46,9 +50,11 @@ class ServiceResponse(BaseModel):
 
     id: int
     nombre: str
+    categoria: str
     descripcion: str
     precio: float
     duracion: int
+    estado: str
 
     barber: BarberSimple
 

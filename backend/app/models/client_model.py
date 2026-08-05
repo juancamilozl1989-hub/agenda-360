@@ -27,6 +27,13 @@ class Client(Base):
 
     # Correo electrónico
     email = Column(String(100), nullable=False)
+    
+    # Estado del cliente
+    estado = Column(
+        String(20),
+        nullable=False,
+        default="Activo"
+    )
 
     # Relación con la barbería
     barbershop_id = Column(

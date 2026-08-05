@@ -52,6 +52,7 @@ def crear_cliente(
         nombre=datos.nombre,
         telefono=datos.telefono,
         email=datos.email,
+        estado=datos.estado,
         barbershop_id=datos.barbershop_id
     )
 
@@ -137,6 +138,7 @@ def actualizar_cliente(
     cliente.nombre = datos.nombre
     cliente.telefono = datos.telefono
     cliente.email = datos.email
+    cliente.estado = datos.estado
     cliente.barbershop_id = datos.barbershop_id
 
     db.commit()

@@ -15,6 +15,7 @@ class ClientCreate(BaseModel):
     nombre: str
     telefono: str
     email: str
+    estado: str = "Activo"
     barbershop_id: int
 
 
@@ -30,6 +31,7 @@ class ClientUpdate(BaseModel):
     nombre: str
     telefono: str
     email: str
+    estado: str
     barbershop_id: int
 
 
@@ -46,6 +48,7 @@ class ClientResponse(BaseModel):
     nombre: str
     telefono: str
     email: str
+    estado: str
 
     barbershop: BarbershopSimple
 

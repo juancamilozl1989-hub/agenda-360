@@ -300,3 +300,15 @@ El módulo quedó preparado para ser conectado posteriormente al backend desarro
 Se reutilizaron los componentes creados anteriormente (DataTable, ConfirmDialog, AppSnackbar y PageHeader), permitiendo mantener una arquitectura consistente y reducir la duplicación de código.
 
 Los módulos implementan operaciones CRUD completas, búsqueda dinámica y notificaciones visuales, dejando preparada la aplicación para la siguiente fase de integración con el backend desarrollado en FastAPI y PostgreSQL.
+
+## Fecha: 04/08/2026
+
+Durante esta sesión se realizó una revisión detallada de la arquitectura actual del backend del proyecto Agenda 360. Inicialmente se identificó que gran parte de la estructura ya se encontraba implementada, incluyendo modelos, esquemas y endpoints para diferentes módulos del sistema.
+
+A partir de este análisis se decidió cambiar la metodología de desarrollo, dejando de crear componentes nuevos para enfocarse en mantener y completar la arquitectura existente.
+
+Se actualizaron los módulos de Clientes, Barberos y Servicios, agregando los nuevos atributos definidos durante el diseño funcional del sistema, tales como estado, especialidad y categoría. Estos cambios fueron aplicados de manera consistente en los modelos, los esquemas de validación y los endpoints de FastAPI.
+
+Al finalizar la jornada, el backend quedó completamente sincronizado para estos tres módulos, permitiendo continuar el desarrollo sobre una base sólida y organizada.
+
+Como siguiente objetivo se estableció la revisión de los módulos de Horarios y Citas, para posteriormente iniciar la integración del frontend desarrollado en React con la API de FastAPI y la base de datos PostgreSQL.
