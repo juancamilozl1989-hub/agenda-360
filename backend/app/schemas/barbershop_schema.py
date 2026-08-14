@@ -1,9 +1,27 @@
+from enum import Enum
+
 from pydantic import BaseModel, EmailStr
 
 
+# ==========================================
+# Estados permitidos para una barbería
+# ==========================================
+class BarbershopStatus(str, Enum):
+    """
+    Estados permitidos para una barbería.
+    """
+
+    ACTIVA = "Activa"
+    INACTIVA = "Inactiva"
+
+
+# ==========================================
+# Crear una barbería
+# ==========================================
 class BarbershopCreate(BaseModel):
     """
-    Datos necesarios para registrar una barbería.
+    Datos necesarios para registrar
+    una barbería.
     """
 
     nombre: str
@@ -12,6 +30,9 @@ class BarbershopCreate(BaseModel):
     email: EmailStr
 
 
+# ==========================================
+# Actualizar una barbería
+# ==========================================
 class BarbershopUpdate(BaseModel):
     """
     Datos para actualizar una barbería.
@@ -21,8 +42,12 @@ class BarbershopUpdate(BaseModel):
     direccion: str
     telefono: str
     email: EmailStr
+    estado: BarbershopStatus
 
 
+# ==========================================
+# Respuesta de la API
+# ==========================================
 class BarbershopResponse(BaseModel):
     """
     Información que devolverá la API.
@@ -33,6 +58,7 @@ class BarbershopResponse(BaseModel):
     direccion: str
     telefono: str
     email: str
+    estado: BarbershopStatus
 
     class Config:
         from_attributes = True

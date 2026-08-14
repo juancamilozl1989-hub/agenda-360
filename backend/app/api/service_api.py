@@ -26,10 +26,14 @@ router = APIRouter(
     tags=["Servicios"]
 )
 
+
 # ==========================================
 # Crear un servicio
 # ==========================================
-@router.post("/", response_model=ServiceResponse)
+@router.post(
+    "/",
+    response_model=ServiceResponse
+)
 def crear_servicio(
     datos: ServiceCreate,
     db: Session = Depends(get_db)
@@ -63,6 +67,13 @@ def crear_servicio(
             detail="La duración del servicio debe ser mayor que cero."
         )
 
+    # Validar el estado
+    if datos.estado not in ["Activo", "Inactivo"]:
+        raise HTTPException(
+            status_code=400,
+            detail="El estado debe ser 'Activo' o 'Inactivo'."
+        )
+
     # Crear el servicio
     servicio = Service(
         nombre=datos.nombre,
@@ -85,7 +96,10 @@ def crear_servicio(
 # ==========================================
 # Listar todos los servicios
 # ==========================================
-@router.get("/", response_model=list[ServiceResponse])
+@router.get(
+    "/",
+    response_model=list[ServiceResponse]
+)
 def listar_servicios(
     db: Session = Depends(get_db)
 ):
@@ -101,7 +115,10 @@ def listar_servicios(
 # ==========================================
 # Obtener un servicio por ID
 # ==========================================
-@router.get("/{service_id}", response_model=ServiceResponse)
+@router.get(
+    "/{service_id}",
+    response_model=ServiceResponse
+)
 def obtener_servicio(
     service_id: int,
     db: Session = Depends(get_db)
@@ -126,7 +143,10 @@ def obtener_servicio(
 # ==========================================
 # Actualizar un servicio
 # ==========================================
-@router.put("/{service_id}", response_model=ServiceResponse)
+@router.put(
+    "/{service_id}",
+    response_model=ServiceResponse
+)
 def actualizar_servicio(
     service_id: int,
     datos: ServiceUpdate,
@@ -136,6 +156,7 @@ def actualizar_servicio(
     Actualizar la información de un servicio.
     """
 
+    # Buscar el servicio
     servicio = db.query(Service).filter(
         Service.id == service_id
     ).first()
@@ -171,6 +192,14 @@ def actualizar_servicio(
             detail="La duración del servicio debe ser mayor que cero."
         )
 
+    # Validar el estado
+    if datos.estado not in ["Activo", "Inactivo"]:
+        raise HTTPException(
+            status_code=400,
+            detail="El estado debe ser 'Activo' o 'Inactivo'."
+        )
+
+    # Actualizar datos
     servicio.nombre = datos.nombre
     servicio.categoria = datos.categoria
     servicio.descripcion = datos.descripcion
@@ -179,6 +208,7 @@ def actualizar_servicio(
     servicio.estado = datos.estado
     servicio.barber_id = datos.barber_id
 
+    # Guardar cambios
     db.commit()
     db.refresh(servicio)
 
@@ -197,6 +227,7 @@ def eliminar_servicio(
     Eliminar un servicio.
     """
 
+    # Buscar el servicio
     servicio = db.query(Service).filter(
         Service.id == service_id
     ).first()
@@ -207,6 +238,7 @@ def eliminar_servicio(
             detail="Servicio no encontrado"
         )
 
+    # Eliminar
     db.delete(servicio)
     db.commit()
 

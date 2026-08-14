@@ -18,7 +18,10 @@ from app.schemas.barber_schema import (
     BarberUpdate
 )
 
-# Router
+
+# ==========================================
+# Router de barberos
+# ==========================================
 router = APIRouter(
     prefix="/barbers",
     tags=["Barberos"]
@@ -28,7 +31,10 @@ router = APIRouter(
 # ==========================================
 # Crear un barbero
 # ==========================================
-@router.post("/", response_model=BarberResponse)
+@router.post(
+    "/",
+    response_model=BarberResponse
+)
 def crear_barbero(
     barbero: BarberCreate,
     db: Session = Depends(get_db)
@@ -57,16 +63,21 @@ def crear_barbero(
         barbershop_id=barbero.barbershop_id
     )
 
+    # Guardar en la base de datos
     db.add(nuevo_barbero)
     db.commit()
     db.refresh(nuevo_barbero)
 
     return nuevo_barbero
 
+
 # ==========================================
 # Listar todos los barberos
 # ==========================================
-@router.get("/", response_model=list[BarberResponse])
+@router.get(
+    "/",
+    response_model=list[BarberResponse]
+)
 def listar_barberos(
     db: Session = Depends(get_db)
 ):
@@ -78,10 +89,14 @@ def listar_barberos(
 
     return barberos
 
+
 # ==========================================
-# Obtener un barbero por su ID
+# Obtener un barbero por ID
 # ==========================================
-@router.get("/{barber_id}", response_model=BarberResponse)
+@router.get(
+    "/{barber_id}",
+    response_model=BarberResponse
+)
 def obtener_barbero(
     barber_id: int,
     db: Session = Depends(get_db)
@@ -95,7 +110,7 @@ def obtener_barbero(
         Barber.id == barber_id
     ).first()
 
-    # Validar si existe
+    # Verificar si existe
     if barbero is None:
         raise HTTPException(
             status_code=404,
@@ -104,10 +119,14 @@ def obtener_barbero(
 
     return barbero
 
+
 # ==========================================
 # Actualizar un barbero
 # ==========================================
-@router.put("/{barber_id}", response_model=BarberResponse)
+@router.put(
+    "/{barber_id}",
+    response_model=BarberResponse
+)
 def actualizar_barbero(
     barber_id: int,
     datos: BarberUpdate,
@@ -147,10 +166,12 @@ def actualizar_barbero(
     barbero.estado = datos.estado
     barbero.barbershop_id = datos.barbershop_id
 
+    # Guardar cambios
     db.commit()
     db.refresh(barbero)
 
     return barbero
+
 
 # ==========================================
 # Eliminar un barbero
@@ -169,7 +190,7 @@ def eliminar_barbero(
         Barber.id == barber_id
     ).first()
 
-    # Validar que exista
+    # Verificar que exista
     if barbero is None:
         raise HTTPException(
             status_code=404,

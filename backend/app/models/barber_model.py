@@ -23,18 +23,18 @@ class Barber(Base):
 
     # Teléfono
     telefono = Column(String(20), nullable=False)
-    
+
     # Especialidad
     especialidad = Column(
         String(100),
         nullable=False
     )
-    
-    # Estado
+
+    # Estado del barbero
     estado = Column(
-    String(20),
-    nullable=False,
-    default="Activo"
+        String(20),
+        nullable=False,
+        default="Activo"
     )
 
     # Relación con la barbería
@@ -56,17 +56,17 @@ class Barber(Base):
         back_populates="barber",
         cascade="all, delete-orphan"
     )
-    
-        # Horarios del barbero
+
+    # Horarios del barbero
     schedules = relationship(
         "Schedule",
         back_populates="barber",
         cascade="all, delete-orphan"
     )
-    
-      # Citas del barbero
+
+    # Citas del barbero
     appointments = relationship(
         "Appointment",
         back_populates="barber",
         cascade="all, delete-orphan"
-)
+    )

@@ -1,5 +1,20 @@
+from enum import Enum
+
 from pydantic import BaseModel
+
 from app.schemas.barbershop_schema import BarbershopSimple
+
+
+# ==========================================
+# Estados permitidos para un barbero
+# ==========================================
+class BarberStatus(str, Enum):
+    """
+    Estados permitidos para un barbero.
+    """
+
+    ACTIVO = "Activo"
+    INACTIVO = "Inactivo"
 
 
 # ==========================================
@@ -14,7 +29,10 @@ class BarberCreate(BaseModel):
     nombre: str
     telefono: str
     especialidad: str
-    estado: str = "Activo"
+
+    # Si no se envía, será Activo
+    estado: BarberStatus = BarberStatus.ACTIVO
+
     barbershop_id: int
 
 
@@ -30,7 +48,7 @@ class BarberUpdate(BaseModel):
     nombre: str
     telefono: str
     especialidad: str
-    estado: str
+    estado: BarberStatus
     barbershop_id: int
 
 
@@ -62,7 +80,7 @@ class BarberResponse(BaseModel):
     nombre: str
     telefono: str
     especialidad: str
-    estado: str
+    estado: BarberStatus
 
     barbershop: BarbershopSimple
 
