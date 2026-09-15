@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 
 # Dependencia de la base de datos
 from app.core.dependencies import get_db
+from app.core.security import obtener_usuario_actual
 
 # Modelos
 from app.models.client_model import Client
@@ -30,6 +31,7 @@ router = APIRouter(
 @router.post("/", response_model=ClientResponse)
 def crear_cliente(
     datos: ClientCreate,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """
@@ -68,6 +70,7 @@ def crear_cliente(
 # ==========================================
 @router.get("/", response_model=list[ClientResponse])
 def obtener_clientes(
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """
@@ -84,6 +87,7 @@ def obtener_clientes(
 @router.get("/{client_id}", response_model=ClientResponse)
 def obtener_cliente(
     client_id: int,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """
@@ -109,6 +113,7 @@ def obtener_cliente(
 def actualizar_cliente(
     client_id: int,
     datos: ClientUpdate,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """
@@ -152,6 +157,7 @@ def actualizar_cliente(
 @router.delete("/{client_id}")
 def eliminar_cliente(
     client_id: int,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """

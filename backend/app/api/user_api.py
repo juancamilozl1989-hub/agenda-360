@@ -67,7 +67,11 @@ def listar_usuarios(
     return usuarios
 
 @router.get("/{user_id}", response_model=UserResponse)
-def obtener_usuario(user_id: int, db: Session = Depends(get_db)):
+def obtener_usuario(
+    user_id: int,
+    usuario_actual = Depends(obtener_usuario_actual),
+    db: Session = Depends(get_db)
+):
     """
     Obtener un usuario específico por su ID.
     """
@@ -91,6 +95,7 @@ def obtener_usuario(user_id: int, db: Session = Depends(get_db)):
 def actualizar_usuario(
     user_id: int,
     user_data: UserUpdate,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     # Buscar el usuario en la base de datos
@@ -119,6 +124,7 @@ def actualizar_usuario(
 @router.delete("/{user_id}")
 def eliminar_usuario(
     user_id: int,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """

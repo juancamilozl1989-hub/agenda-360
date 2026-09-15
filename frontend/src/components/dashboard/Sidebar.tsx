@@ -1,10 +1,12 @@
 import {
   Avatar,
   Box,
+  IconButton,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Tooltip,
   Typography,
 } from "@mui/material";
 
@@ -15,8 +17,10 @@ import ContentCutIcon from "@mui/icons-material/ContentCut";
 import PersonIcon from "@mui/icons-material/Person";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import SettingsIcon from "@mui/icons-material/Settings";
+import LogoutIcon from "@mui/icons-material/Logout";
 
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const menuItems = [
   {
@@ -58,6 +62,13 @@ const menuItems = [
 
 export default function Sidebar() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { userEmail, logout } = useAuth();
+
+  function handleLogout() {
+    logout();
+    navigate("/");
+  }
 
   return (
     <Box
@@ -172,15 +183,17 @@ export default function Sidebar() {
             fontWeight: "bold",
           }}
         >
-          C
+          {userEmail ? userEmail.charAt(0).toUpperCase() : "?"}
         </Avatar>
 
-        <Box>
+        <Box sx={{ minWidth: 0, flex: 1 }}>
           <Typography
             fontWeight="bold"
             color="#FFF"
+            noWrap
+            title={userEmail ?? undefined}
           >
-            Juan Camilo
+            {userEmail ?? "Usuario"}
           </Typography>
 
           <Typography
@@ -190,6 +203,16 @@ export default function Sidebar() {
             Administrador
           </Typography>
         </Box>
+
+        <Tooltip title="Cerrar sesión">
+          <IconButton
+            onClick={handleLogout}
+            size="small"
+            sx={{ color: "#D4AF37" }}
+          >
+            <LogoutIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
       </Box>
     </Box>
   );

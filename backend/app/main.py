@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from app.core.base import Base
 from app.core.database import engine
 from app.api.user_api import router as user_router
@@ -25,6 +26,25 @@ from app.models.client_model import Client
 from app.models.appointment_model import Appointment
 
 app = FastAPI()
+
+# ==========================================================
+# CORS
+# ==========================================================
+# Permite que el frontend (que corre en otro puerto durante
+# el desarrollo) pueda comunicarse con esta API sin ser
+# bloqueado por el navegador.
+origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Registrar rutas de usuarios
 app.include_router(user_router)
@@ -108,4 +128,3 @@ def verify_token_endpoint(
         "mensaje": "Token válido",
         "datos": payload
     }
-    

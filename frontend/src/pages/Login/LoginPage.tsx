@@ -1,8 +1,14 @@
+import { useState } from "react";
+import type { FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
+
 import hero from "../../assets/hero.jpg";
 
 import {
+  Alert,
   Box,
   Button,
+  CircularProgress,
   Paper,
   Typography,
 } from "@mui/material";
@@ -14,8 +20,37 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 import CustomTextField from "../../components/forms/CustomTextField";
+import { useAuth } from "../../context/AuthContext";
 
 export default function LoginPage() {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [cargando, setCargando] = useState(false);
+
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    setError(null);
+
+    if (!email || !password) {
+      setError("Ingresa tu usuario y tu contraseña.");
+      return;
+    }
+
+    try {
+      setCargando(true);
+      await login(email, password);
+      navigate("/dashboard");
+    } catch {
+      setError("Correo o contraseña incorrectos.");
+    } finally {
+      setCargando(false);
+    }
+  }
+
   return (
     <Box
       sx={{
@@ -181,6 +216,8 @@ export default function LoginPage() {
         }}
       >
         <Paper
+          component="form"
+          onSubmit={handleSubmit}
           elevation={0}
           sx={{
             width: 430,
@@ -241,11 +278,25 @@ export default function LoginPage() {
             </Typography>
           </Box>
 
+          {/* Mensaje de error */}
+
+          {error && (
+            <Alert
+              severity="error"
+              sx={{ mb: 2 }}
+            >
+              {error}
+            </Alert>
+          )}
+
           {/* Usuario */}
 
           <CustomTextField
-            label="Usuario"
+            label="Usuario (correo)"
             margin="normal"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={cargando}
             icon={
               <PersonOutlineIcon
                 sx={{
@@ -261,6 +312,9 @@ export default function LoginPage() {
             label="Contraseña"
             type="password"
             margin="normal"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            disabled={cargando}
             icon={
               <LockOutlinedIcon
                 sx={{
@@ -273,9 +327,11 @@ export default function LoginPage() {
           {/* Botón */}
 
           <Button
+            type="submit"
             fullWidth
             variant="contained"
             size="large"
+            disabled={cargando}
             sx={{
               mt: 4,
               py: 1.6,
@@ -294,7 +350,14 @@ export default function LoginPage() {
               },
             }}
           >
-            Iniciar sesión
+            {cargando ? (
+              <CircularProgress
+                size={24}
+                sx={{ color: "#121212" }}
+              />
+            ) : (
+              "Iniciar sesión"
+            )}
           </Button>
         </Paper>
       </Box>

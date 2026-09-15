@@ -58,9 +58,11 @@ def verificar_password(
         password_hash
     )
     
-SECRET_KEY = "agenda360_secret_key"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+from app.core.config import (
+    SECRET_KEY,
+    ALGORITHM,
+    ACCESS_TOKEN_EXPIRE_MINUTES,
+)
 
 oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl="/users/login"

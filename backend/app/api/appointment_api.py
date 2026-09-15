@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 
 # Dependencia de la base de datos
 from app.core.dependencies import get_db
+from app.core.security import obtener_usuario_actual
 
 # Modelos
 from app.models.appointment_model import Appointment
@@ -36,6 +37,7 @@ router = APIRouter(
 @router.post("/", response_model=AppointmentResponse)
 def crear_cita(
     datos: AppointmentCreate,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """
@@ -49,6 +51,7 @@ def crear_cita(
       
 @router.get("/", response_model=list[AppointmentResponse])
 def obtener_citas(
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """
@@ -65,6 +68,7 @@ def obtener_citas(
 @router.get("/{appointment_id}", response_model=AppointmentResponse)
 def obtener_cita(
     appointment_id: int,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """
@@ -90,6 +94,7 @@ def obtener_cita(
 def actualizar_cita(
     appointment_id: int,
     datos: AppointmentUpdate,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """
@@ -186,6 +191,7 @@ def actualizar_cita(
 @router.delete("/{appointment_id}")
 def eliminar_cita(
     appointment_id: int,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """

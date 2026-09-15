@@ -312,3 +312,34 @@ Se actualizaron los módulos de Clientes, Barberos y Servicios, agregando los nu
 Al finalizar la jornada, el backend quedó completamente sincronizado para estos tres módulos, permitiendo continuar el desarrollo sobre una base sólida y organizada.
 
 Como siguiente objetivo se estableció la revisión de los módulos de Horarios y Citas, para posteriormente iniciar la integración del frontend desarrollado en React con la API de FastAPI y la base de datos PostgreSQL.
+
+## 13 de agosto de 2026
+
+Se continuó con el desarrollo del backend de Agenda-360. Se terminó la implementación del módulo de servicios y se realizaron las pruebas correspondientes en Swagger.
+
+Durante las pruebas se encontraron algunos campos que faltaban en las tablas de PostgreSQL, los cuales fueron agregados desde pgAdmin. Después de realizar las correcciones, los endpoints funcionaron correctamente.
+
+Finalmente se guardaron los cambios en Git y se realizó el push al repositorio de GitHub.
+
+Estado: Módulo de servicios terminado y funcionando correctamente.
+
+## Día de desarrollo 14/09/2026
+
+Durante esta sesión el enfoque estuvo en cerrar brechas de seguridad del backend antes de avanzar con la integración del frontend. Se identificó que la clave secreta usada para firmar los tokens JWT estaba escrita directamente en el código, y que la mayoría de los endpoints de gestión no exigían autenticación, permitiendo que cualquier persona pudiera consultarlos o modificarlos sin haber iniciado sesión.
+
+Se corrigió trasladando la clave a una variable de entorno y añadiendo la dependencia de autenticación a los routers de barberías, barberos, servicios, horarios, clientes y citas, dejando accesibles sin token únicamente las rutas de registro y login.
+
+Con el backend ya protegido, se avanzó en conectar el frontend a la API real. Se construyó un cliente HTTP centralizado con axios, un contexto de autenticación para manejar la sesión en toda la aplicación, y un componente de ruta privada que impide entrar directamente a las páginas internas sin haber iniciado sesión.
+
+La página de Login, que hasta ahora era solo una maqueta visual, pasó a estar completamente conectada: valida los campos, llama al backend, muestra un mensaje si las credenciales son incorrectas y redirige al Dashboard cuando el ingreso es exitoso. También se añadió un botón para cerrar sesión y se actualizó el Sidebar para mostrar el correo real del usuario autenticado en lugar de un nombre fijo de prueba.
+
+Durante las pruebas surgieron algunos inconvenientes propios de la integración: una carpeta con un nombre distinto al esperado en las importaciones, ausencia de configuración CORS en el backend (lo que bloqueaba las peticiones del navegador) y un archivo de variables de entorno del frontend que no llegó a crearse correctamente. Cada uno se fue diagnosticando y corrigiendo de forma independiente hasta lograr el flujo completo de inicio de sesión funcionando de extremo a extremo.
+
+## Resultado
+
+Agenda 360 cuenta ahora con un flujo de autenticación real y funcional entre el frontend y el backend, con las rutas protegidas correctamente y una base de seguridad sólida para continuar el desarrollo.
+
+## Próxima sesión
+
+- Conectar los módulos de Clientes, Barberos, Servicios y Agenda con la información real del backend.
+- Comenzar el diseño de la integración con la API de WhatsApp Business.

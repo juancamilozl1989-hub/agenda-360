@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 
 # Dependencia para la base de datos
 from app.core.dependencies import get_db
+from app.core.security import obtener_usuario_actual
 
 # Modelo Service
 from app.models.service_model import Service
@@ -36,6 +37,7 @@ router = APIRouter(
 )
 def crear_servicio(
     datos: ServiceCreate,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """
@@ -101,6 +103,7 @@ def crear_servicio(
     response_model=list[ServiceResponse]
 )
 def listar_servicios(
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """
@@ -121,6 +124,7 @@ def listar_servicios(
 )
 def obtener_servicio(
     service_id: int,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """
@@ -150,6 +154,7 @@ def obtener_servicio(
 def actualizar_servicio(
     service_id: int,
     datos: ServiceUpdate,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """
@@ -221,6 +226,7 @@ def actualizar_servicio(
 @router.delete("/{service_id}")
 def eliminar_servicio(
     service_id: int,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """

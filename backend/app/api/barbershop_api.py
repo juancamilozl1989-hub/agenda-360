@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.core.dependencies import get_db
+from app.core.security import obtener_usuario_actual
 
 from app.models.barbershop_model import Barbershop
 
@@ -30,6 +31,7 @@ router = APIRouter(
 )
 def crear_barberia(
     barberia: BarbershopCreate,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """
@@ -61,6 +63,7 @@ def crear_barberia(
     response_model=list[BarbershopResponse]
 )
 def listar_barberias(
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """
@@ -79,6 +82,7 @@ def listar_barberias(
 )
 def obtener_barberia(
     barbershop_id: int,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """
@@ -108,6 +112,7 @@ def obtener_barberia(
 def actualizar_barberia(
     barbershop_id: int,
     datos: BarbershopUpdate,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """
@@ -143,6 +148,7 @@ def actualizar_barberia(
 @router.delete("/{barbershop_id}")
 def eliminar_barberia(
     barbershop_id: int,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """

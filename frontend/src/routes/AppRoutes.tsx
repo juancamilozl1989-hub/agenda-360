@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 
 import DashboardLayout from "../layouts/DashboardLayout";
+import PrivateRoute from "./PrivateRoute";
 
 import LoginPage from "../pages/Login/LoginPage";
 import DashboardPage from "../pages/Dashboard/DashboardPage";
@@ -21,7 +22,7 @@ export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Login */}
+        {/* Login (pública) */}
         <Route
           path="/"
           element={<LoginPage />}
@@ -31,9 +32,11 @@ export default function AppRoutes() {
         <Route
           path="/dashboard"
           element={
-            <DashboardLayout>
-              <DashboardPage />
-            </DashboardLayout>
+            <PrivateRoute>
+              <DashboardLayout>
+                <DashboardPage />
+              </DashboardLayout>
+            </PrivateRoute>
           }
         />
 
@@ -41,9 +44,11 @@ export default function AppRoutes() {
         <Route
           path="/agenda"
           element={
-            <DashboardLayout>
-              <AgendaPage />
-            </DashboardLayout>
+            <PrivateRoute>
+              <DashboardLayout>
+                <AgendaPage />
+              </DashboardLayout>
+            </PrivateRoute>
           }
         />
 
@@ -51,9 +56,11 @@ export default function AppRoutes() {
         <Route
           path="/clientes"
           element={
-            <DashboardLayout>
-              <ClientesPage />
-            </DashboardLayout>
+            <PrivateRoute>
+              <DashboardLayout>
+                <ClientesPage />
+              </DashboardLayout>
+            </PrivateRoute>
           }
         />
 
@@ -61,9 +68,11 @@ export default function AppRoutes() {
         <Route
           path="/servicios"
           element={
-            <DashboardLayout>
-              <ServiciosPage />
-            </DashboardLayout>
+            <PrivateRoute>
+              <DashboardLayout>
+                <ServiciosPage />
+              </DashboardLayout>
+            </PrivateRoute>
           }
         />
 
@@ -71,9 +80,11 @@ export default function AppRoutes() {
         <Route
           path="/barberos"
           element={
-            <DashboardLayout>
-              <BarberosPage />
-            </DashboardLayout>
+            <PrivateRoute>
+              <DashboardLayout>
+                <BarberosPage />
+              </DashboardLayout>
+            </PrivateRoute>
           }
         />
 
@@ -81,9 +92,11 @@ export default function AppRoutes() {
         <Route
           path="/reportes"
           element={
-            <DashboardLayout>
-              <ReportesPage />
-            </DashboardLayout>
+            <PrivateRoute>
+              <DashboardLayout>
+                <ReportesPage />
+              </DashboardLayout>
+            </PrivateRoute>
           }
         />
 

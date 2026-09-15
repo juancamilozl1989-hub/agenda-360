@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 
 # Dependencia de la base de datos
 from app.core.dependencies import get_db
+from app.core.security import obtener_usuario_actual
 
 # Modelos
 from app.models.schedule_model import Schedule
@@ -30,6 +31,7 @@ router = APIRouter(
 @router.post("/", response_model=ScheduleResponse)
 def crear_horario(
     datos: ScheduleCreate,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """
@@ -67,6 +69,7 @@ def crear_horario(
 # ==========================================
 @router.get("/", response_model=list[ScheduleResponse])
 def listar_horarios(
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """
@@ -83,6 +86,7 @@ def listar_horarios(
 @router.get("/{schedule_id}", response_model=ScheduleResponse)
 def obtener_horario(
     schedule_id: int,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """
@@ -108,6 +112,7 @@ def obtener_horario(
 def actualizar_horario(
     schedule_id: int,
     datos: ScheduleUpdate,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """
@@ -150,6 +155,7 @@ def actualizar_horario(
 @router.delete("/{schedule_id}")
 def eliminar_horario(
     schedule_id: int,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """

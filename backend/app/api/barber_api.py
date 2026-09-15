@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 
 # Conexión a la base de datos
 from app.core.dependencies import get_db
+from app.core.security import obtener_usuario_actual
 
 # Modelos
 from app.models.barber_model import Barber
@@ -37,6 +38,7 @@ router = APIRouter(
 )
 def crear_barbero(
     barbero: BarberCreate,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """
@@ -79,6 +81,7 @@ def crear_barbero(
     response_model=list[BarberResponse]
 )
 def listar_barberos(
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """
@@ -99,6 +102,7 @@ def listar_barberos(
 )
 def obtener_barbero(
     barber_id: int,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """
@@ -130,6 +134,7 @@ def obtener_barbero(
 def actualizar_barbero(
     barber_id: int,
     datos: BarberUpdate,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """
@@ -179,6 +184,7 @@ def actualizar_barbero(
 @router.delete("/{barber_id}")
 def eliminar_barbero(
     barber_id: int,
+    usuario_actual = Depends(obtener_usuario_actual),
     db: Session = Depends(get_db)
 ):
     """

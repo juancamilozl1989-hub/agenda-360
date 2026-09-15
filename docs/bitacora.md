@@ -494,3 +494,48 @@ Los módulos de Clientes, Barberos y Servicios quedaron completamente sincroniza
 - Revisar el módulo de Horarios (Schedules).
 - Revisar el módulo de Citas (Appointments).
 - Iniciar la integración entre React, FastAPI y PostgreSQL.
+
+## Fecha: 13 de agosto de 2026
+Proyecto: Agenda-360
+
+Actividad: Desarrollo y pruebas del módulo de Servicios.
+
+## Trabajo realizado:
+
+Se creó y configuró el modelo Service.
+Se crearon los schemas ServiceCreate, ServiceUpdate y ServiceResponse.
+Se implementaron los endpoints CRUD de servicios.
+Se agregaron validaciones de precio y duración.
+Se verificó la relación entre servicios y barberos.
+Se realizaron pruebas mediante Swagger.
+Se corrigieron campos faltantes en PostgreSQL desde pgAdmin.
+Se realizaron pruebas de estado y eliminación.
+Se realizó commit y push de los cambios a GitHub.
+
+Commit:
+a36af0d - feat: completar gestion de barberias, barberos y servicios
+
+## Fecha: 14/09/2026
+
+### Actividades realizadas
+
+- Se reforzó la seguridad del backend: la SECRET_KEY del JWT se trasladó de estar escrita directamente en el código a una variable de entorno (.env), agregando una validación que impide iniciar el servidor si no está configurada.
+- Se protegieron con autenticación JWT todos los endpoints de gestión (barberías, barberos, servicios, horarios, clientes y citas), dejando públicos únicamente el registro y el login de usuarios.
+- Se configuró CORS en el backend para permitir peticiones del frontend en desarrollo (localhost:5173).
+- Se creó un cliente HTTP centralizado (axiosClient) en el frontend, con interceptores que adjuntan el token automáticamente a cada petición y cierran la sesión ante una respuesta 401.
+- Se implementó AuthContext para manejar el estado de la sesión (token y usuario) en toda la aplicación.
+- Se implementó PrivateRoute para impedir el acceso directo a las páginas internas sin sesión iniciada.
+- Se conectó LoginPage con el backend real: validación de campos, manejo de errores y redirección al Dashboard tras un inicio de sesión exitoso.
+- Se actualizó el Sidebar para mostrar el correo del usuario autenticado real y se agregó la opción de cerrar sesión.
+- Se realizaron pruebas de extremo a extremo (registro, login, petición autenticada) confirmando el correcto funcionamiento de todo el flujo.
+
+### Estado
+
+✅ Funcional.
+
+El backend quedó protegido con autenticación obligatoria en todos los módulos de gestión, y el frontend ya se autentica contra la API real, mostrando el Dashboard únicamente a usuarios con sesión válida.
+
+### Próximas actividades
+
+- Conectar los módulos de Clientes, Barberos, Servicios y Agenda con los datos reales del backend (actualmente muestran datos de ejemplo).
+- Iniciar la integración del bot de WhatsApp para el agendamiento automático de citas.
