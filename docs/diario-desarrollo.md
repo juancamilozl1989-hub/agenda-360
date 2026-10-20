@@ -343,3 +343,23 @@ Agenda 360 cuenta ahora con un flujo de autenticación real y funcional entre el
 
 - Conectar los módulos de Clientes, Barberos, Servicios y Agenda con la información real del backend.
 - Comenzar el diseño de la integración con la API de WhatsApp Business.
+
+## Día de desarrollo 16/10/2026
+
+Esta fue una jornada larga de integración. El objetivo era que el panel dejara de mostrar datos de ejemplo y trabajara con la base de datos real, así que cada módulo pasó a tener su propio servicio de API en el frontend y una forma común de mostrar los errores que devuelve FastAPI. Clientes, Barberos, Servicios, Agenda y el Dashboard quedaron leyendo y guardando en PostgreSQL, y la sección de Reportes, que estaba marcada como fuera de servicio, por fin quedó funcionando con indicadores reales.
+
+En paralelo se armaron las pruebas automatizadas con pytest. Para poder importar la aplicación sin tener PostgreSQL encendido hubo que mover la creación de tablas a un evento de arranque. Las pruebas ayudaron a encontrar un error de lógica que no se veía a simple vista: una cita cancelada seguía bloqueando la hora del barbero.
+
+Al ejecutar todo en mi equipo aparecieron problemas que en las pruebas no salían. El panel decía que no se podía conectar con el servidor aunque uvicorn respondía 200; era el navegador bloqueando las respuestas por CORS. Se resolvió con un proxy en Vite, de modo que el frontend llama a `/api` y Vite reenvía al backend. Después la agenda no cargaba porque la tabla de clientes, creada en fases anteriores, no tenía la columna `estado`: `create_all` crea tablas, pero no agrega columnas a las que ya existen. Para no tener que corregir esto a mano desde pgAdmin cada vez, el backend ahora revisa al arrancar y agrega las columnas que falten. También noté que el sistema me dejó crear una cita para las 9 de la mañana cuando ya eran casi las 11 de la noche, así que se agregó la validación de la hora.
+
+## Día de desarrollo 17/10/2026
+
+Probando la creación de citas me di cuenta de que el diseño no se ajustaba a la idea del proyecto. Cada servicio estaba amarrado a un barbero, entonces al elegir un barbero solo aparecía un servicio y el cliente no podía escoger con quién atenderse. Además, la agenda no tenía en cuenta los horarios de los barberos ni cuánto dura cada servicio: solo rechazaba una cita si era exactamente a la misma hora.
+
+Pensando en el bot de WhatsApp, donde es el cliente quien elige el día y la hora según la disponibilidad, se replanteó esa parte. Los servicios ahora son el catálogo de la barbería, la agenda solo acepta citas dentro del horario del barbero y compara las citas como intervalos de tiempo según la duración del servicio. Se creó la consulta de disponibilidad (`GET /availability/`), que será la base del bot, y en el panel se agregó la pantalla de Horarios y un selector que solo ofrece horas libres.
+
+Todo quedó probado: 112 pruebas aprobadas en SQLite y en PostgreSQL. Con estos cambios se actualizó el informe de la Fase 3, rehaciendo los diagramas y las capturas para que coincidan con lo que realmente está construido.
+
+## Próxima sesión
+
+- Prototipo del bot de WhatsApp sobre la consulta de disponibilidad.

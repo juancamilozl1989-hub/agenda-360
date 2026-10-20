@@ -19,3 +19,6 @@ Thumbs.db
 .pytest_cache/
 .coverage
 htmlcov/
+
+# Documentos de la universidad (se trabajan y entregan por fuera del repositorio)
+docs/*.pdf

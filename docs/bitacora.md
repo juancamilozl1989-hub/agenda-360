@@ -539,3 +539,44 @@ El backend quedó protegido con autenticación obligatoria en todos los módulos
 
 - Conectar los módulos de Clientes, Barberos, Servicios y Agenda con los datos reales del backend (actualmente muestran datos de ejemplo).
 - Iniciar la integración del bot de WhatsApp para el agendamiento automático de citas.
+
+## Fecha: 16/10/2026
+
+### Objetivo
+Conectar todos los módulos del panel con la API real y construir la batería de pruebas automatizadas de la Fase 3.
+
+### Actividades realizadas
+- Se crearon los servicios de API del frontend por recurso (clientes, barberos, servicios, barberías y citas) y una función común para mostrar los errores del servidor.
+- Se conectaron Clientes, Barberos, Servicios, Agenda y Dashboard con PostgreSQL, eliminando los datos de ejemplo.
+- Se implementó el modal de nueva cita y la sección de Reportes (ingresos, ticket promedio, cancelaciones y desempeño por barbero y servicio).
+- Se movió la creación de tablas a un evento de arranque (lifespan) para poder importar la aplicación en las pruebas.
+- Se convirtió `requirements.txt` a UTF-8 y se creó `requirements-dev.txt` con pytest, pytest-cov y httpx.
+- Se escribieron pruebas de unidad e integración con pytest; se corrigió que una cita cancelada siguiera ocupando el horario del barbero (H-01).
+- Se agregó un proxy en Vite (`/api`) y un middleware que devuelve los errores internos como JSON, porque el navegador bloqueaba las respuestas del backend (CORS).
+- La pantalla de login ahora muestra el mensaje real del servidor y no siempre «contraseña incorrecta».
+- Al arrancar, el backend agrega las columnas que falten en tablas ya creadas (`core/migraciones.py`); se detectó que `clients` no tenía la columna `estado`.
+- Se validó que no se puedan crear citas en una hora del día que ya pasó.
+
+### Resultado
+El panel quedó trabajando de extremo a extremo con la base de datos real y el backend quedó cubierto por pruebas automatizadas.
+
+## Fecha: 17/10/2026
+
+### Objetivo
+Ajustar el modelo de agenda pensando en el bot de WhatsApp y actualizar el documento de la Fase 3.
+
+### Actividades realizadas
+- Los servicios pasaron a ser el catálogo de la barbería (`barbershop_id` en lugar de `barber_id`); cualquier barbero activo puede atender cualquier servicio. Los servicios existentes se migraron automáticamente.
+- Nuevas reglas al crear o reprogramar una cita: barbero y servicio activos, cita dentro del horario del barbero ese día y sin cruces según la duración del servicio.
+- Se validaron los horarios: día de la semana válido, hora de fin posterior al inicio y bloques que no se crucen.
+- Se creó la ruta `GET /availability/` que devuelve las horas libres para un servicio en una fecha, con o sin barbero.
+- Se creó la pantalla de Horarios en el panel (permite registrar varios días a la vez) y el modal de citas ahora muestra solo las horas disponibles, con la opción «Cualquier barbero disponible».
+- Se ajustó el tamaño del monto en la tarjeta de ingresos del dashboard.
+- La suite quedó en 112 pruebas aprobadas en SQLite y PostgreSQL 16, con 94 % de cobertura.
+- Se actualizó el informe de la Fase 3 (diagramas, capturas, resultados de pruebas y hallazgos H-09 a H-14).
+
+### Resultado
+La agenda respeta los horarios y la duración de cada servicio, y la API ya tiene la consulta de disponibilidad que usará el bot.
+
+### Próximas actividades
+- Construir el prototipo del bot de WhatsApp que consulte `/availability/` y registre la cita.
