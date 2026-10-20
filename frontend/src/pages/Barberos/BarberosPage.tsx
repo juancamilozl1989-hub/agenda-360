@@ -1,9 +1,10 @@
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import {
   Avatar,
   Box,
   Chip,
+  CircularProgress,
   IconButton,
   InputAdornment,
   TextField,
@@ -17,54 +18,52 @@ import PageHeader from "../../components/common/PageHeader";
 import DataTable from "../../components/tables/DataTable";
 import AppSnackbar from "../../components/common/AppSnackbar";
 import ConfirmDialog from "../../components/common/ConfirmDialog";
-
 import BarberoFormModal from "../../components/modals/BarberoFormModal";
-import type { Barbero } from "../../components/modals/BarberoFormModal";
+
+import {
+  actualizarBarbero,
+  crearBarbero,
+  eliminarBarbero,
+  listarBarberos,
+} from "../../api/barberosService";
+import { obtenerBarberiaPrincipal } from "../../api/barberiasService";
+import { mensajeError } from "../../api/errores";
+import type { Barbero, BarberoForm } from "../../api/tipos";
 
 export default function BarberosPage() {
   const [openModal, setOpenModal] = useState(false);
-
   const [barberoEditar, setBarberoEditar] =
-    useState<Barbero | null>(null);
-
+    useState<BarberoForm | null>(null);
   const [barberoEliminar, setBarberoEliminar] =
     useState<Barbero | null>(null);
-
   const [busqueda, setBusqueda] = useState("");
-
-  const [barberos, setBarberos] = useState<Barbero[]>([
-    {
-      id: 1,
-      nombre: "Andrés López",
-      especialidad: "Fade",
-      telefono: "3001234567",
-      estado: "Activo",
-    },
-    {
-      id: 2,
-      nombre: "Sebastián Gómez",
-      especialidad: "Barba",
-      telefono: "3014567890",
-      estado: "Activo",
-    },
-    {
-      id: 3,
-      nombre: "Juan Rojas",
-      especialidad: "Color",
-      telefono: "3209876543",
-      estado: "Inactivo",
-    },
-  ]);
+  const [barberos, setBarberos] = useState<Barbero[]>([]);
+  const [cargando, setCargando] = useState(true);
 
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
-    severity: "success" as
-      | "success"
-      | "error"
-      | "warning"
-      | "info",
+    severity: "success" as "success" | "error" | "warning" | "info",
   });
+
+  const avisar = (
+    message: string,
+    severity: "success" | "error" = "success"
+  ) => setSnackbar({ open: true, message, severity });
+
+  const cargarBarberos = useCallback(async () => {
+    try {
+      setBarberos(await listarBarberos());
+    } catch (error) {
+      avisar(mensajeError(error, "No se pudieron cargar los barberos."), "error");
+    } finally {
+      setCargando(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    cargarBarberos();
+  }, [cargarBarberos]);
 
   const barberosFiltrados = useMemo(() => {
     const texto = busqueda.toLowerCase();
@@ -77,57 +76,41 @@ export default function BarberosPage() {
     );
   }, [barberos, busqueda]);
 
-  const handleGuardarBarbero = (
-    barbero: Barbero
-  ) => {
-    const existe = barberos.some(
-      (b) => b.id === barbero.id
-    );
+  const handleGuardarBarbero = async (
+    form: BarberoForm
+  ): Promise<boolean> => {
+    try {
+      const barberia = await obtenerBarberiaPrincipal();
 
-    if (existe) {
-      setBarberos(
-        barberos.map((b) =>
-          b.id === barbero.id ? barbero : b
-        )
-      );
+      if (form.id === 0) {
+        await crearBarbero(form, barberia.id);
+        avisar("Barbero creado correctamente.");
+      } else {
+        await actualizarBarbero(form, barberia.id);
+        avisar("Barbero actualizado correctamente.");
+      }
 
-      setSnackbar({
-        open: true,
-        message:
-          "Barbero actualizado correctamente.",
-        severity: "success",
-      });
-    } else {
-      setBarberos([...barberos, barbero]);
-
-      setSnackbar({
-        open: true,
-        message:
-          "Barbero creado correctamente.",
-        severity: "success",
-      });
+      setBarberoEditar(null);
+      await cargarBarberos();
+      return true;
+    } catch (error) {
+      avisar(mensajeError(error, "No se pudo guardar el barbero."), "error");
+      return false;
     }
-
-    setBarberoEditar(null);
   };
 
-  const handleEliminarBarbero = () => {
+  const handleEliminarBarbero = async () => {
     if (!barberoEliminar) return;
 
-    setBarberos(
-      barberos.filter(
-        (b) => b.id !== barberoEliminar.id
-      )
-    );
-
-    setSnackbar({
-      open: true,
-      message:
-        "Barbero eliminado correctamente.",
-      severity: "success",
-    });
-
-    setBarberoEliminar(null);
+    try {
+      await eliminarBarbero(barberoEliminar.id);
+      avisar("Barbero eliminado correctamente.");
+      await cargarBarberos();
+    } catch (error) {
+      avisar(mensajeError(error, "No se pudo eliminar el barbero."), "error");
+    } finally {
+      setBarberoEliminar(null);
+    }
   };
 
   const columns = [
@@ -146,29 +129,16 @@ export default function BarberosPage() {
         </Avatar>
       ),
     },
-    {
-      field: "nombre",
-      headerName: "Nombre",
-    },
-    {
-      field: "especialidad",
-      headerName: "Especialidad",
-    },
-    {
-      field: "telefono",
-      headerName: "Teléfono",
-    },
+    { field: "nombre", headerName: "Nombre" },
+    { field: "especialidad", headerName: "Especialidad" },
+    { field: "telefono", headerName: "Teléfono" },
     {
       field: "estado",
       headerName: "Estado",
       render: (value: string) => (
         <Chip
           label={value}
-          color={
-            value === "Activo"
-              ? "success"
-              : "default"
-          }
+          color={value === "Activo" ? "success" : "default"}
           size="small"
         />
       ),
@@ -191,9 +161,7 @@ export default function BarberosPage() {
         fullWidth
         placeholder="Buscar barbero..."
         value={busqueda}
-        onChange={(e) =>
-          setBusqueda(e.target.value)
-        }
+        onChange={(e) => setBusqueda(e.target.value)}
         sx={{ mb: 3 }}
         slotProps={{
           input: {
@@ -206,32 +174,42 @@ export default function BarberosPage() {
         }}
       />
 
-      <DataTable
-        columns={columns}
-        rows={barberosFiltrados}
-        renderActions={(row) => (
-          <>
-            <IconButton
-              color="primary"
-              onClick={() => {
-                setBarberoEditar(row);
-                setOpenModal(true);
-              }}
-            >
-              <EditIcon />
-            </IconButton>
+      {cargando ? (
+        <Box display="flex" justifyContent="center" py={6}>
+          <CircularProgress sx={{ color: "#D4AF37" }} />
+        </Box>
+      ) : (
+        <DataTable
+          columns={columns}
+          rows={barberosFiltrados}
+          renderActions={(row) => (
+            <>
+              <IconButton
+                color="primary"
+                onClick={() => {
+                  setBarberoEditar({
+                    id: row.id,
+                    nombre: row.nombre,
+                    especialidad: row.especialidad,
+                    telefono: row.telefono,
+                    estado: row.estado,
+                  });
+                  setOpenModal(true);
+                }}
+              >
+                <EditIcon />
+              </IconButton>
 
-            <IconButton
-              color="error"
-              onClick={() =>
-                setBarberoEliminar(row)
-              }
-            >
-              <DeleteIcon />
-            </IconButton>
-          </>
-        )}
-      />
+              <IconButton
+                color="error"
+                onClick={() => setBarberoEliminar(row)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </>
+          )}
+        />
+      )}
 
       <BarberoFormModal
         open={openModal}
@@ -250,21 +228,14 @@ export default function BarberosPage() {
           barberoEliminar?.nombre ?? ""
         }?`}
         onConfirm={handleEliminarBarbero}
-        onCancel={() =>
-          setBarberoEliminar(null)
-        }
+        onCancel={() => setBarberoEliminar(null)}
       />
 
       <AppSnackbar
         open={snackbar.open}
         message={snackbar.message}
         severity={snackbar.severity}
-        onClose={() =>
-          setSnackbar({
-            ...snackbar,
-            open: false,
-          })
-        }
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
       />
     </Box>
   );

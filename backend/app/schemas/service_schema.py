@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from app.schemas.barber_schema import BarberSimple
+from app.schemas.barbershop_schema import BarbershopSimple
 
 
 # ==========================================
@@ -18,7 +18,7 @@ class ServiceCreate(BaseModel):
     precio: float
     duracion: int
     estado: str = "Activo"
-    barber_id: int
+    barbershop_id: int
 
 
 # ==========================================
@@ -36,7 +36,7 @@ class ServiceUpdate(BaseModel):
     precio: float
     duracion: int
     estado: str
-    barber_id: int
+    barbershop_id: int
 
 
 # ==========================================
@@ -56,7 +56,7 @@ class ServiceResponse(BaseModel):
     duracion: int
     estado: str
 
-    barber: BarberSimple
+    barbershop: BarbershopSimple
 
     class Config:
         from_attributes = True

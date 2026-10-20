@@ -17,6 +17,7 @@ import ClientesPage from "../pages/Clientes/ClientesPage.tsx";
 import ServiciosPage from "../pages/Servicios/ServiciosPage.tsx";
 import BarberosPage from "../pages/Barberos/BarberosPage.tsx";
 import ReportesPage from "../pages/Reportes/ReportesPage.tsx";
+import HorariosPage from "../pages/Horarios/HorariosPage.tsx";
 
 export default function AppRoutes() {
   return (
@@ -83,6 +84,18 @@ export default function AppRoutes() {
             <PrivateRoute>
               <DashboardLayout>
                 <BarberosPage />
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+
+        {/* Horarios de atención */}
+        <Route
+          path="/horarios"
+          element={
+            <PrivateRoute>
+              <DashboardLayout>
+                <HorariosPage />
               </DashboardLayout>
             </PrivateRoute>
           }

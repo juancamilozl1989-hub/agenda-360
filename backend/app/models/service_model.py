@@ -10,7 +10,10 @@ from app.core.base import Base
 
 class Service(Base):
     """
-    Modelo de los servicios que ofrece un barbero.
+    Modelo de los servicios que ofrece la barbería.
+
+    Los servicios forman el catálogo de la barbería: cualquier
+    barbero activo puede atender cualquier servicio activo.
     """
 
     __tablename__ = "services"
@@ -52,16 +55,16 @@ class Service(Base):
         default="Activo"
     )
 
-    # Relación con el barbero
-    barber_id = Column(
+    # Relación con la barbería
+    barbershop_id = Column(
         Integer,
-        ForeignKey("barbers.id"),
+        ForeignKey("barbershops.id"),
         nullable=False
     )
 
     # Relación ORM
-    barber = relationship(
-        "Barber",
+    barbershop = relationship(
+        "Barbershop",
         back_populates="services"
     )
 

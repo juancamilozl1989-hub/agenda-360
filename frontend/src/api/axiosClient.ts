@@ -4,7 +4,8 @@ import axios from "axios";
 // Toda petición a la API debe pasar por aquí para heredar
 // automáticamente la URL base y el token de autenticación.
 const axiosClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  // "/api" pasa por el proxy de Vite (vite.config.ts) hacia FastAPI
+  baseURL: import.meta.env.VITE_API_URL || "/api",
 });
 
 // ==========================================================

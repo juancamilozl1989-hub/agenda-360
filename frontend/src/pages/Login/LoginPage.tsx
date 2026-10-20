@@ -21,6 +21,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 import CustomTextField from "../../components/forms/CustomTextField";
 import { useAuth } from "../../context/AuthContext";
+import { mensajeError } from "../../api/errores";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -44,8 +45,10 @@ export default function LoginPage() {
       setCargando(true);
       await login(email, password);
       navigate("/dashboard");
-    } catch {
-      setError("Correo o contraseña incorrectos.");
+    } catch (e) {
+      // Se muestra el mensaje real: credenciales incorrectas (401),
+      // servidor apagado o un error interno del backend.
+      setError(mensajeError(e, "No se pudo iniciar sesión."));
     } finally {
       setCargando(false);
     }

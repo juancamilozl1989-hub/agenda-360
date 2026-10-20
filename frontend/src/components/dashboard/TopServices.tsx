@@ -5,13 +5,18 @@ import {
   LinearProgress,
 } from "@mui/material";
 
-const services = [
-  { name: "Corte Clásico", value: 90 },
-  { name: "Barba Premium", value: 72 },
-  { name: "Corte + Barba", value: 55 },
-];
+export interface ServicioDestacado {
+  name: string;
+  count: number;
+}
 
-export default function TopServices() {
+interface TopServicesProps {
+  services: ServicioDestacado[];
+}
+
+export default function TopServices({ services }: TopServicesProps) {
+  const maximo = Math.max(...services.map((s) => s.count), 1);
+
   return (
     <Paper
       sx={{
@@ -20,23 +25,29 @@ export default function TopServices() {
         bgcolor: "#1E1E1E",
       }}
     >
-      <Typography
-        variant="h6"
-        fontWeight="bold"
-        mb={3}
-      >
-        Servicios más vendidos
+      <Typography variant="h6" fontWeight="bold" mb={3}>
+        Servicios más solicitados
       </Typography>
+
+      {services.length === 0 && (
+        <Typography color="text.secondary">
+          Todavía no hay citas para calcular los servicios más solicitados.
+        </Typography>
+      )}
 
       {services.map((service) => (
         <Box key={service.name} mb={3}>
-          <Typography mb={1}>
-            {service.name}
-          </Typography>
+          <Box display="flex" justifyContent="space-between" mb={1}>
+            <Typography>{service.name}</Typography>
+
+            <Typography color="#D4AF37" fontWeight="bold">
+              {service.count}
+            </Typography>
+          </Box>
 
           <LinearProgress
             variant="determinate"
-            value={service.value}
+            value={(service.count / maximo) * 100}
             sx={{
               height: 10,
               borderRadius: 5,

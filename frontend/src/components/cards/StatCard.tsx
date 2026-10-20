@@ -39,10 +39,12 @@ export default function StatCard({
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          gap: 2,
           px: 3,
         }}
       >
-        <Box>
+        {/* minWidth: 0 permite que el texto se ajuste sin empujar el ícono */}
+        <Box sx={{ minWidth: 0, flex: 1 }}>
           <Typography
             variant="body2"
             sx={{
@@ -54,12 +56,25 @@ export default function StatCard({
             {title}
           </Typography>
 
+          {/* Hallazgo H-07: los montos largos (por ejemplo "$ 1.250.000")
+              se montaban sobre el ícono. El tamaño de la fuente se reduce
+              según la longitud del valor y nunca se parte en dos líneas. */}
           <Typography
             variant="h4"
             sx={{
               mt: 1.5,
               fontWeight: 700,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              fontSize:
+                value.length > 10
+                  ? "1.1rem"
+                  : value.length > 5
+                    ? "1.35rem"
+                    : undefined,
             }}
+            title={value}
           >
             {value}
           </Typography>
@@ -69,6 +84,7 @@ export default function StatCard({
           sx={{
             width: 68,
             height: 68,
+            flexShrink: 0,
             borderRadius: "50%",
             bgcolor: color,
             display: "flex",

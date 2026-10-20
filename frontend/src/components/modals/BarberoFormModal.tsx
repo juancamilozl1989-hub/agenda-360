@@ -1,30 +1,34 @@
 import { useEffect, useState } from "react";
 
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
+  Alert,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  MenuItem,
   Stack,
   TextField,
-  MenuItem,
 } from "@mui/material";
 
-export interface Barbero {
-  id: number;
-  nombre: string;
-  especialidad: string;
-  telefono: string;
-  estado: string;
-}
+import type { BarberoForm } from "../../api/tipos";
 
 interface BarberoFormModalProps {
   open: boolean;
   onClose: () => void;
-  onSave: (barbero: Barbero) => void;
-  barberoEditar?: Barbero | null;
+  // Devuelve true si la API aceptó el cambio; solo entonces se cierra el modal.
+  onSave: (barbero: BarberoForm) => Promise<boolean>;
+  barberoEditar?: BarberoForm | null;
 }
+
+const VACIO: BarberoForm = {
+  id: 0,
+  nombre: "",
+  especialidad: "",
+  telefono: "",
+  estado: "Activo",
+};
 
 export default function BarberoFormModal({
   open,
@@ -32,26 +36,13 @@ export default function BarberoFormModal({
   onSave,
   barberoEditar,
 }: BarberoFormModalProps) {
-  const [formData, setFormData] = useState<Barbero>({
-    id: 0,
-    nombre: "",
-    especialidad: "",
-    telefono: "",
-    estado: "Activo",
-  });
+  const [formData, setFormData] = useState<BarberoForm>(VACIO);
+  const [error, setError] = useState("");
+  const [guardando, setGuardando] = useState(false);
 
   useEffect(() => {
-    if (barberoEditar) {
-      setFormData(barberoEditar);
-    } else {
-      setFormData({
-        id: 0,
-        nombre: "",
-        especialidad: "",
-        telefono: "",
-        estado: "Activo",
-      });
-    }
+    setFormData(barberoEditar ?? VACIO);
+    setError("");
   }, [barberoEditar, open]);
 
   const handleChange = (
@@ -63,43 +54,38 @@ export default function BarberoFormModal({
     });
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (
       !formData.nombre.trim() ||
       !formData.especialidad.trim() ||
       !formData.telefono.trim()
     ) {
-      alert("Todos los campos son obligatorios.");
+      setError("Todos los campos son obligatorios.");
       return;
     }
 
-    const nuevoBarbero: Barbero = {
+    setGuardando(true);
+    const guardado = await onSave({
       ...formData,
-      id:
-        formData.id === 0
-          ? Date.now()
-          : formData.id,
-    };
+      nombre: formData.nombre.trim(),
+      especialidad: formData.especialidad.trim(),
+      telefono: formData.telefono.trim(),
+    });
+    setGuardando(false);
 
-    onSave(nuevoBarbero);
-    onClose();
+    if (guardado) onClose();
   };
 
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      fullWidth
-      maxWidth="sm"
-    >
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle>
-        {barberoEditar
-          ? "Editar Barbero"
-          : "Nuevo Barbero"}
+        {barberoEditar ? "Editar Barbero" : "Nuevo Barbero"}
       </DialogTitle>
 
       <DialogContent>
         <Stack spacing={3} mt={1}>
+          {error && <Alert severity="error">{error}</Alert>}
+
           <TextField
             label="Nombre"
             name="nombre"
@@ -133,37 +119,27 @@ export default function BarberoFormModal({
             onChange={handleChange}
             fullWidth
           >
-            <MenuItem value="Activo">
-              Activo
-            </MenuItem>
-
-            <MenuItem value="Inactivo">
-              Inactivo
-            </MenuItem>
+            <MenuItem value="Activo">Activo</MenuItem>
+            <MenuItem value="Inactivo">Inactivo</MenuItem>
           </TextField>
         </Stack>
       </DialogContent>
 
       <DialogActions sx={{ p: 3 }}>
-        <Button onClick={onClose}>
-          Cancelar
-        </Button>
+        <Button onClick={onClose}>Cancelar</Button>
 
         <Button
           variant="contained"
           onClick={handleSave}
+          disabled={guardando}
           sx={{
             bgcolor: "#D4AF37",
             color: "#121212",
             fontWeight: "bold",
-            "&:hover": {
-              bgcolor: "#C49A1D",
-            },
+            "&:hover": { bgcolor: "#C49A1D" },
           }}
         >
-          {barberoEditar
-            ? "Actualizar"
-            : "Guardar"}
+          {barberoEditar ? "Actualizar" : "Guardar"}
         </Button>
       </DialogActions>
     </Dialog>

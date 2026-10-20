@@ -1,7 +1,15 @@
-from fastapi import FastAPI
+import logging
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from app.core.base import Base
 from app.core.database import engine
+from app.core.migraciones import (
+    migrar_servicios_a_barberia,
+    sincronizar_columnas,
+)
 from app.api.user_api import router as user_router
 from app.api.barbershop_api import router as barbershop_router
 from app.api.barber_api import router as barber_router
@@ -9,6 +17,7 @@ from app.api.service_api import router as service_router
 from app.api.schedule_api import router as schedule_router
 from app.api.client_api import router as client_router
 from app.api.appointment_api import router as appointment_router
+from app.api.availability_api import router as availability_router
 
 from app.core.security import (
     obtener_password_hash,
@@ -25,22 +34,61 @@ from app.models.schedule_model import Schedule
 from app.models.client_model import Client
 from app.models.appointment_model import Appointment
 
-app = FastAPI()
+# ==========================================================
+# Ciclo de vida de la aplicación
+# ==========================================================
+# Las tablas se crean al arrancar el servidor (no al importar el
+# módulo). Así la aplicación puede importarse en las pruebas
+# automatizadas sin necesidad de tener PostgreSQL encendido.
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    Base.metadata.create_all(bind=engine)
+    # Agrega columnas nuevas de los modelos a tablas que ya existían
+    sincronizar_columnas(engine)
+    # Los servicios pasan de pertenecer a un barbero a la barbería
+    migrar_servicios_a_barberia(engine)
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
+
+logger = logging.getLogger("agenda360")
+
+
+# ==========================================================
+# Errores internos legibles
+# ==========================================================
+# Si ocurre un error no controlado (por ejemplo, una columna que
+# no existe en la base de datos), FastAPI responde 500 SIN las
+# cabeceras CORS y el navegador lo reporta como "no se pudo
+# conectar con el servidor". Este middleware captura el error,
+# lo deja en la consola de uvicorn y devuelve un JSON con el
+# detalle. Se registra ANTES que CORS para que CORS lo envuelva
+# y la respuesta sí llegue al panel.
+@app.middleware("http")
+async def capturar_errores(request: Request, call_next):
+    try:
+        return await call_next(request)
+    except Exception as error:
+        logger.exception("Error no controlado en %s %s", request.method, request.url.path)
+        return JSONResponse(
+            status_code=500,
+            content={
+                "detail": f"Error interno del servidor: {type(error).__name__}: {error}"
+            },
+        )
+
 
 # ==========================================================
 # CORS
 # ==========================================================
 # Permite que el frontend (que corre en otro puerto durante
 # el desarrollo) pueda comunicarse con esta API sin ser
-# bloqueado por el navegador.
-origins = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-]
-
+# bloqueado por el navegador. Se acepta cualquier puerto de
+# localhost, porque Vite usa 5174, 5175... si el 5173 está ocupado.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origin_regex=r"http://(localhost|127\.0\.0\.1):\d+",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -54,9 +102,7 @@ app.include_router(service_router)
 app.include_router(schedule_router)
 app.include_router(client_router)
 app.include_router(appointment_router)
-
-# Crear tablas automáticamente
-Base.metadata.create_all(bind=engine)
+app.include_router(availability_router)
 
 @app.get("/")
 def inicio():

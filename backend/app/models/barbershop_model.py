@@ -51,3 +51,10 @@ class Barbershop(Base):
         back_populates="barbershop",
         cascade="all, delete-orphan"
 )
+
+    # Catálogo de servicios de la barbería
+    services = relationship(
+        "Service",
+        back_populates="barbershop",
+        cascade="all, delete-orphan"
+)

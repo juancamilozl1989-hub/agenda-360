@@ -1,8 +1,9 @@
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import {
   Box,
   Chip,
+  CircularProgress,
   IconButton,
   InputAdornment,
   TextField,
@@ -16,156 +17,125 @@ import PageHeader from "../../components/common/PageHeader";
 import DataTable from "../../components/tables/DataTable";
 import AppSnackbar from "../../components/common/AppSnackbar";
 import ConfirmDialog from "../../components/common/ConfirmDialog";
-
 import ClientFormModal from "../../components/modals/ClientFormModal";
-import type { Cliente } from "../../components/modals/ClientFormModal";
+
+import {
+  actualizarCliente,
+  crearCliente,
+  eliminarCliente,
+  listarClientes,
+} from "../../api/clientesService";
+import { obtenerBarberiaPrincipal } from "../../api/barberiasService";
+import { mensajeError } from "../../api/errores";
+import type { Cliente, ClienteForm } from "../../api/tipos";
 
 export default function ClientesPage() {
   const [openModal, setOpenModal] = useState(false);
-
   const [clienteEditar, setClienteEditar] =
-    useState<Cliente | null>(null);
-
+    useState<ClienteForm | null>(null);
   const [clienteEliminar, setClienteEliminar] =
     useState<Cliente | null>(null);
-
   const [busqueda, setBusqueda] = useState("");
-
-  const [clientes, setClientes] = useState<Cliente[]>([
-    {
-      id: 1,
-      nombre: "Juan Pérez",
-      telefono: "3001234567",
-      correo: "juan@gmail.com",
-      estado: "Activo",
-    },
-    {
-      id: 2,
-      nombre: "Carlos Gómez",
-      telefono: "3019876543",
-      correo: "carlos@gmail.com",
-      estado: "Activo",
-    },
-    {
-      id: 3,
-      nombre: "David Ramírez",
-      telefono: "3205558877",
-      correo: "david@gmail.com",
-      estado: "Inactivo",
-    },
-  ]);
+  const [clientes, setClientes] = useState<Cliente[]>([]);
+  const [cargando, setCargando] = useState(true);
 
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
-    severity: "success" as
-      | "success"
-      | "error"
-      | "warning"
-      | "info",
+    severity: "success" as "success" | "error" | "warning" | "info",
   });
 
-  const clientesFiltrados = useMemo(() => {
-    return clientes.filter((cliente) => {
-      const texto = busqueda.toLowerCase();
+  const avisar = (
+    message: string,
+    severity: "success" | "error" = "success"
+  ) => setSnackbar({ open: true, message, severity });
 
-      return (
+  // Carga inicial desde la API
+  const cargarClientes = useCallback(async () => {
+    try {
+      setClientes(await listarClientes());
+    } catch (error) {
+      avisar(mensajeError(error, "No se pudieron cargar los clientes."), "error");
+    } finally {
+      setCargando(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    cargarClientes();
+  }, [cargarClientes]);
+
+  const clientesFiltrados = useMemo(() => {
+    const texto = busqueda.toLowerCase();
+
+    return clientes.filter(
+      (cliente) =>
         cliente.nombre.toLowerCase().includes(texto) ||
         cliente.telefono.includes(texto) ||
-        cliente.correo.toLowerCase().includes(texto)
-      );
-    });
+        cliente.email.toLowerCase().includes(texto)
+    );
   }, [clientes, busqueda]);
 
-  const handleNuevoCliente = () => {
-    setClienteEditar(null);
+  const handleEditarCliente = (cliente: Cliente) => {
+    setClienteEditar({
+      id: cliente.id,
+      nombre: cliente.nombre,
+      telefono: cliente.telefono,
+      email: cliente.email,
+      estado: cliente.estado,
+    });
     setOpenModal(true);
   };
 
-  const handleEditarCliente = (
-    cliente: Cliente
-  ) => {
-    setClienteEditar(cliente);
-    setOpenModal(true);
-  };
+  // Crea o actualiza según el id y devuelve si la operación fue exitosa
+  const handleGuardarCliente = async (
+    form: ClienteForm
+  ): Promise<boolean> => {
+    try {
+      const barberia = await obtenerBarberiaPrincipal();
 
-  const handleGuardarCliente = (
-    cliente: Cliente
-  ) => {
-    const existe = clientes.some(
-      (c) => c.id === cliente.id
-    );
+      if (form.id === 0) {
+        await crearCliente(form, barberia.id);
+        avisar("Cliente creado correctamente.");
+      } else {
+        await actualizarCliente(form, barberia.id);
+        avisar("Cliente actualizado correctamente.");
+      }
 
-    if (existe) {
-      setClientes(
-        clientes.map((c) =>
-          c.id === cliente.id ? cliente : c
-        )
-      );
-
-      setSnackbar({
-        open: true,
-        message:
-          "Cliente actualizado correctamente.",
-        severity: "success",
-      });
-    } else {
-      setClientes([...clientes, cliente]);
-
-      setSnackbar({
-        open: true,
-        message:
-          "Cliente creado correctamente.",
-        severity: "success",
-      });
+      setClienteEditar(null);
+      await cargarClientes();
+      return true;
+    } catch (error) {
+      avisar(mensajeError(error, "No se pudo guardar el cliente."), "error");
+      return false;
     }
-
-    setClienteEditar(null);
   };
 
-  const handleEliminarCliente = () => {
+  const handleEliminarCliente = async () => {
     if (!clienteEliminar) return;
 
-    setClientes(
-      clientes.filter(
-        (c) => c.id !== clienteEliminar.id
-      )
-    );
-
-    setSnackbar({
-      open: true,
-      message:
-        "Cliente eliminado correctamente.",
-      severity: "success",
-    });
-
-    setClienteEliminar(null);
+    try {
+      await eliminarCliente(clienteEliminar.id);
+      avisar("Cliente eliminado correctamente.");
+      await cargarClientes();
+    } catch (error) {
+      avisar(mensajeError(error, "No se pudo eliminar el cliente."), "error");
+    } finally {
+      setClienteEliminar(null);
+    }
   };
 
   const columns = [
-    {
-      field: "nombre",
-      headerName: "Nombre",
-    },
-    {
-      field: "telefono",
-      headerName: "Teléfono",
-    },
-    {
-      field: "correo",
-      headerName: "Correo",
-    },
+    { field: "nombre", headerName: "Nombre" },
+    { field: "telefono", headerName: "Teléfono" },
+    { field: "email", headerName: "Correo" },
     {
       field: "estado",
       headerName: "Estado",
       render: (value: string) => (
         <Chip
           label={value}
-          color={
-            value === "Activo"
-              ? "success"
-              : "default"
-          }
+          color={value === "Activo" ? "success" : "default"}
           size="small"
         />
       ),
@@ -178,16 +148,17 @@ export default function ClientesPage() {
         title="Clientes"
         subtitle="Administra los clientes registrados."
         buttonText="Nuevo Cliente"
-        onClick={handleNuevoCliente}
+        onClick={() => {
+          setClienteEditar(null);
+          setOpenModal(true);
+        }}
       />
 
       <TextField
         fullWidth
         placeholder="Buscar cliente..."
         value={busqueda}
-        onChange={(e) =>
-          setBusqueda(e.target.value)
-        }
+        onChange={(e) => setBusqueda(e.target.value)}
         sx={{ mb: 3 }}
         slotProps={{
           input: {
@@ -200,31 +171,33 @@ export default function ClientesPage() {
         }}
       />
 
-      <DataTable
-        columns={columns}
-        rows={clientesFiltrados}
-        renderActions={(row) => (
-          <>
-            <IconButton
-              color="primary"
-              onClick={() =>
-                handleEditarCliente(row)
-              }
-            >
-              <EditIcon />
-            </IconButton>
+      {cargando ? (
+        <Box display="flex" justifyContent="center" py={6}>
+          <CircularProgress sx={{ color: "#D4AF37" }} />
+        </Box>
+      ) : (
+        <DataTable
+          columns={columns}
+          rows={clientesFiltrados}
+          renderActions={(row) => (
+            <>
+              <IconButton
+                color="primary"
+                onClick={() => handleEditarCliente(row)}
+              >
+                <EditIcon />
+              </IconButton>
 
-            <IconButton
-              color="error"
-              onClick={() =>
-                setClienteEliminar(row)
-              }
-            >
-              <DeleteIcon />
-            </IconButton>
-          </>
-        )}
-      />
+              <IconButton
+                color="error"
+                onClick={() => setClienteEliminar(row)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </>
+          )}
+        />
+      )}
 
       <ClientFormModal
         open={openModal}
@@ -243,21 +216,14 @@ export default function ClientesPage() {
           clienteEliminar?.nombre ?? ""
         }?`}
         onConfirm={handleEliminarCliente}
-        onCancel={() =>
-          setClienteEliminar(null)
-        }
+        onCancel={() => setClienteEliminar(null)}
       />
 
       <AppSnackbar
         open={snackbar.open}
         message={snackbar.message}
         severity={snackbar.severity}
-        onClose={() =>
-          setSnackbar({
-            ...snackbar,
-            open: false,
-          })
-        }
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
       />
     </Box>
   );

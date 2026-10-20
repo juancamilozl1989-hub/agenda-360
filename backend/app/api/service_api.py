@@ -11,8 +11,8 @@ from app.core.security import obtener_usuario_actual
 # Modelo Service
 from app.models.service_model import Service
 
-# Modelo Barber (para validar que exista)
-from app.models.barber_model import Barber
+# Modelo Barbershop (para validar que exista)
+from app.models.barbershop_model import Barbershop
 
 # Schemas
 from app.schemas.service_schema import (
@@ -44,15 +44,15 @@ def crear_servicio(
     Registrar un nuevo servicio.
     """
 
-    # Verificar que exista el barbero
-    barbero = db.query(Barber).filter(
-        Barber.id == datos.barber_id
+    # Verificar que exista la barbería
+    barberia = db.query(Barbershop).filter(
+        Barbershop.id == datos.barbershop_id
     ).first()
 
-    if barbero is None:
+    if barberia is None:
         raise HTTPException(
             status_code=404,
-            detail="Barbero no encontrado"
+            detail="Barbería no encontrada"
         )
 
     # Validar que el precio sea mayor que cero
@@ -84,7 +84,7 @@ def crear_servicio(
         precio=datos.precio,
         duracion=datos.duracion,
         estado=datos.estado,
-        barber_id=datos.barber_id
+        barbershop_id=datos.barbershop_id
     )
 
     # Guardar en la base de datos
@@ -172,15 +172,15 @@ def actualizar_servicio(
             detail="Servicio no encontrado"
         )
 
-    # Verificar que exista el barbero
-    barbero = db.query(Barber).filter(
-        Barber.id == datos.barber_id
+    # Verificar que exista la barbería
+    barberia = db.query(Barbershop).filter(
+        Barbershop.id == datos.barbershop_id
     ).first()
 
-    if barbero is None:
+    if barberia is None:
         raise HTTPException(
             status_code=404,
-            detail="Barbero no encontrado"
+            detail="Barbería no encontrada"
         )
 
     # Validar que el precio sea mayor que cero
@@ -211,7 +211,7 @@ def actualizar_servicio(
     servicio.precio = datos.precio
     servicio.duracion = datos.duracion
     servicio.estado = datos.estado
-    servicio.barber_id = datos.barber_id
+    servicio.barbershop_id = datos.barbershop_id
 
     # Guardar cambios
     db.commit()

@@ -6,49 +6,35 @@ import {
   Typography,
 } from "@mui/material";
 
-const appointments = [
-  {
-    client: "Carlos Gómez",
-    service: "Corte Clásico",
-    time: "09:00 AM",
-  },
-  {
-    client: "Andrés Pérez",
-    service: "Barba Premium",
-    time: "10:00 AM",
-  },
-  {
-    client: "Felipe Ramírez",
-    service: "Corte + Barba",
-    time: "11:30 AM",
-  },
-  {
-    client: "Juan Torres",
-    service: "Perfilado",
-    time: "02:00 PM",
-  },
-];
+import type { Cita } from "../../api/tipos";
 
-export default function RecentAppointments() {
+interface RecentAppointmentsProps {
+  citas: Cita[];
+}
+
+export default function RecentAppointments({
+  citas,
+}: RecentAppointmentsProps) {
   return (
     <Paper
       sx={{
-        mt: 5,
         p: 4,
         borderRadius: 4,
         bgcolor: "#1E1E1E",
       }}
     >
-      <Typography
-        variant="h6"
-        fontWeight="bold"
-        mb={3}
-      >
+      <Typography variant="h6" fontWeight="bold" mb={3}>
         Próximas citas de hoy
       </Typography>
 
-      {appointments.map((appointment, index) => (
-        <Box key={index}>
+      {citas.length === 0 && (
+        <Typography color="text.secondary">
+          No hay citas pendientes para hoy.
+        </Typography>
+      )}
+
+      {citas.map((cita, index) => (
+        <Box key={cita.id}>
           <Box
             sx={{
               display: "flex",
@@ -71,34 +57,26 @@ export default function RecentAppointments() {
                   fontWeight: "bold",
                 }}
               >
-                {appointment.client.charAt(0)}
+                {cita.client.nombre.charAt(0)}
               </Avatar>
 
               <Box>
                 <Typography fontWeight="bold">
-                  {appointment.client}
+                  {cita.client.nombre}
                 </Typography>
 
-                <Typography
-                  variant="body2"
-                  color="gray"
-                >
-                  {appointment.service}
+                <Typography variant="body2" color="gray">
+                  {cita.service.nombre}
                 </Typography>
               </Box>
             </Box>
 
-            <Typography
-              fontWeight="bold"
-              color="#D4AF37"
-            >
-              {appointment.time}
+            <Typography fontWeight="bold" color="#D4AF37">
+              {cita.hora.slice(0, 5)}
             </Typography>
           </Box>
 
-          {index < appointments.length - 1 && (
-            <Divider />
-          )}
+          {index < citas.length - 1 && <Divider />}
         </Box>
       ))}
     </Paper>

@@ -1,30 +1,34 @@
 import { useEffect, useState } from "react";
 
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
+  Alert,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  MenuItem,
   Stack,
   TextField,
-  MenuItem,
 } from "@mui/material";
 
-export interface Cliente {
-  id: number;
-  nombre: string;
-  telefono: string;
-  correo: string;
-  estado: string;
-}
+import type { ClienteForm } from "../../api/tipos";
 
 interface ClientFormModalProps {
   open: boolean;
   onClose: () => void;
-  onSave: (cliente: Cliente) => void;
-  clienteEditar?: Cliente | null;
+  // Devuelve true si la API aceptó el cambio; solo entonces se cierra el modal.
+  onSave: (cliente: ClienteForm) => Promise<boolean>;
+  clienteEditar?: ClienteForm | null;
 }
+
+const VACIO: ClienteForm = {
+  id: 0,
+  nombre: "",
+  telefono: "",
+  email: "",
+  estado: "Activo",
+};
 
 export default function ClientFormModal({
   open,
@@ -32,26 +36,13 @@ export default function ClientFormModal({
   onSave,
   clienteEditar,
 }: ClientFormModalProps) {
-  const [formData, setFormData] = useState<Cliente>({
-    id: 0,
-    nombre: "",
-    telefono: "",
-    correo: "",
-    estado: "Activo",
-  });
+  const [formData, setFormData] = useState<ClienteForm>(VACIO);
+  const [error, setError] = useState("");
+  const [guardando, setGuardando] = useState(false);
 
   useEffect(() => {
-    if (clienteEditar) {
-      setFormData(clienteEditar);
-    } else {
-      setFormData({
-        id: 0,
-        nombre: "",
-        telefono: "",
-        correo: "",
-        estado: "Activo",
-      });
-    }
+    setFormData(clienteEditar ?? VACIO);
+    setError("");
   }, [clienteEditar, open]);
 
   const handleChange = (
@@ -63,43 +54,38 @@ export default function ClientFormModal({
     });
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (
       !formData.nombre.trim() ||
       !formData.telefono.trim() ||
-      !formData.correo.trim()
+      !formData.email.trim()
     ) {
-      alert("Todos los campos son obligatorios.");
+      setError("Todos los campos son obligatorios.");
       return;
     }
 
-    const cliente: Cliente = {
+    setGuardando(true);
+    const guardado = await onSave({
       ...formData,
-      id:
-        formData.id === 0
-          ? Date.now()
-          : formData.id,
-    };
+      nombre: formData.nombre.trim(),
+      telefono: formData.telefono.trim(),
+      email: formData.email.trim(),
+    });
+    setGuardando(false);
 
-    onSave(cliente);
-    onClose();
+    if (guardado) onClose();
   };
 
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      fullWidth
-      maxWidth="sm"
-    >
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle>
-        {clienteEditar
-          ? "Editar Cliente"
-          : "Nuevo Cliente"}
+        {clienteEditar ? "Editar Cliente" : "Nuevo Cliente"}
       </DialogTitle>
 
       <DialogContent>
         <Stack spacing={3} mt={1}>
+          {error && <Alert severity="error">{error}</Alert>}
+
           <TextField
             label="Nombre"
             name="nombre"
@@ -118,8 +104,9 @@ export default function ClientFormModal({
 
           <TextField
             label="Correo electrónico"
-            name="correo"
-            value={formData.correo}
+            name="email"
+            type="email"
+            value={formData.email}
             onChange={handleChange}
             fullWidth
           />
@@ -132,32 +119,24 @@ export default function ClientFormModal({
             onChange={handleChange}
             fullWidth
           >
-            <MenuItem value="Activo">
-              Activo
-            </MenuItem>
-
-            <MenuItem value="Inactivo">
-              Inactivo
-            </MenuItem>
+            <MenuItem value="Activo">Activo</MenuItem>
+            <MenuItem value="Inactivo">Inactivo</MenuItem>
           </TextField>
         </Stack>
       </DialogContent>
 
       <DialogActions sx={{ p: 3 }}>
-        <Button onClick={onClose}>
-          Cancelar
-        </Button>
+        <Button onClick={onClose}>Cancelar</Button>
 
         <Button
           variant="contained"
           onClick={handleSave}
+          disabled={guardando}
           sx={{
             bgcolor: "#D4AF37",
             color: "#121212",
             fontWeight: "bold",
-            "&:hover": {
-              bgcolor: "#C49A1D",
-            },
+            "&:hover": { bgcolor: "#C49A1D" },
           }}
         >
           {clienteEditar ? "Actualizar" : "Guardar"}

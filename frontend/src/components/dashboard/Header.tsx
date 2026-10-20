@@ -13,7 +13,13 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
+import { useAuth } from "../../context/AuthContext";
+
 export default function Header() {
+  // Se muestra el usuario que inició sesión (el correo con el que ingresó)
+  const { userEmail } = useAuth();
+  const nombreUsuario = userEmail ? userEmail.split("@")[0] : "Usuario";
+
   return (
     <AppBar
       position="static"
@@ -119,14 +125,14 @@ export default function Header() {
                 fontWeight: "bold",
               }}
             >
-              C
+              {nombreUsuario.charAt(0).toUpperCase()}
             </Avatar>
 
             <Box>
               <Typography
                 fontWeight="bold"
               >
-                Juan Camilo
+                {nombreUsuario}
               </Typography>
 
               <Typography

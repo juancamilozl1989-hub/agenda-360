@@ -5,22 +5,16 @@ import {
   Typography,
 } from "@mui/material";
 
-const barbers = [
-  {
-    name: "Juan",
-    appointments: 18,
-  },
-  {
-    name: "Pedro",
-    appointments: 15,
-  },
-  {
-    name: "Luis",
-    appointments: 12,
-  },
-];
+export interface BarberoDestacado {
+  name: string;
+  appointments: number;
+}
 
-export default function TopBarbers() {
+interface TopBarbersProps {
+  barbers: BarberoDestacado[];
+}
+
+export default function TopBarbers({ barbers }: TopBarbersProps) {
   return (
     <Paper
       sx={{
@@ -29,13 +23,15 @@ export default function TopBarbers() {
         bgcolor: "#1E1E1E",
       }}
     >
-      <Typography
-        variant="h6"
-        fontWeight="bold"
-        mb={3}
-      >
+      <Typography variant="h6" fontWeight="bold" mb={3}>
         Barberos destacados
       </Typography>
+
+      {barbers.length === 0 && (
+        <Typography color="text.secondary">
+          Todavía no hay citas para destacar barberos.
+        </Typography>
+      )}
 
       {barbers.map((barber) => (
         <Box
@@ -63,16 +59,12 @@ export default function TopBarbers() {
               {barber.name.charAt(0)}
             </Avatar>
 
-            <Typography>
-              {barber.name}
-            </Typography>
+            <Typography>{barber.name}</Typography>
           </Box>
 
-          <Typography
-            color="#D4AF37"
-            fontWeight="bold"
-          >
-            {barber.appointments} citas
+          <Typography color="#D4AF37" fontWeight="bold">
+            {barber.appointments}{}
+            {barber.appointments === 1 ? "cita" : "citas"}
           </Typography>
         </Box>
       ))}

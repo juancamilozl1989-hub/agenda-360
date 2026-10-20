@@ -16,6 +16,7 @@ import GroupsIcon from "@mui/icons-material/Groups";
 import ContentCutIcon from "@mui/icons-material/ContentCut";
 import PersonIcon from "@mui/icons-material/Person";
 import AssessmentIcon from "@mui/icons-material/Assessment";
+import ScheduleIcon from "@mui/icons-material/Schedule";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 
@@ -47,6 +48,11 @@ const menuItems = [
     text: "Barberos",
     path: "/barberos",
     icon: <PersonIcon />,
+  },
+  {
+    text: "Horarios",
+    path: "/horarios",
+    icon: <ScheduleIcon />,
   },
   {
     text: "Reportes",

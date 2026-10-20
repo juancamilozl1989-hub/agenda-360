@@ -14,3 +14,8 @@ __pycache__/
 # Archivos del sistema
 .DS_Store
 Thumbs.db
+
+# Archivos generados por las pruebas
+.pytest_cache/
+.coverage
+htmlcov/

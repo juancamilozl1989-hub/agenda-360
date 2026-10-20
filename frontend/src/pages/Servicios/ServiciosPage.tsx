@@ -1,8 +1,9 @@
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import {
   Box,
   Chip,
+  CircularProgress,
   IconButton,
   InputAdornment,
   TextField,
@@ -16,57 +17,53 @@ import PageHeader from "../../components/common/PageHeader";
 import DataTable from "../../components/tables/DataTable";
 import AppSnackbar from "../../components/common/AppSnackbar";
 import ConfirmDialog from "../../components/common/ConfirmDialog";
-
 import ServicioFormModal from "../../components/modals/ServicioFormModal";
-import type { Servicio } from "../../components/modals/ServicioFormModal";
+
+import {
+  actualizarServicio,
+  crearServicio,
+  eliminarServicio,
+  listarServicios,
+} from "../../api/serviciosService";
+import { mensajeError } from "../../api/errores";
+import type { Servicio, ServicioForm } from "../../api/tipos";
 
 export default function ServiciosPage() {
   const [openModal, setOpenModal] = useState(false);
-
   const [servicioEditar, setServicioEditar] =
-    useState<Servicio | null>(null);
-
+    useState<ServicioForm | null>(null);
   const [servicioEliminar, setServicioEliminar] =
     useState<Servicio | null>(null);
-
   const [busqueda, setBusqueda] = useState("");
-
-  const [servicios, setServicios] = useState<Servicio[]>([
-    {
-      id: 1,
-      nombre: "Corte Clásico",
-      categoria: "Corte",
-      duracion: 30,
-      precio: 25000,
-      estado: "Activo",
-    },
-    {
-      id: 2,
-      nombre: "Fade",
-      categoria: "Corte",
-      duracion: 45,
-      precio: 35000,
-      estado: "Activo",
-    },
-    {
-      id: 3,
-      nombre: "Barba Premium",
-      categoria: "Barba",
-      duracion: 20,
-      precio: 18000,
-      estado: "Activo",
-    },
-  ]);
+  const [servicios, setServicios] = useState<Servicio[]>([]);
+  const [cargando, setCargando] = useState(true);
 
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
-    severity: "success" as
-      | "success"
-      | "error"
-      | "warning"
-      | "info",
+    severity: "success" as "success" | "error" | "warning" | "info",
   });
+
+  const avisar = (
+    message: string,
+    severity: "success" | "error" = "success"
+  ) => setSnackbar({ open: true, message, severity });
+
+  // Los servicios son el catálogo de la barbería: cualquier
+  // barbero activo puede atenderlos.
+  const cargarDatos = useCallback(async () => {
+    try {
+      setServicios(await listarServicios());
+    } catch (error) {
+      avisar(mensajeError(error, "No se pudieron cargar los servicios."), "error");
+    } finally {
+      setCargando(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    cargarDatos();
+  }, [cargarDatos]);
 
   const serviciosFiltrados = useMemo(() => {
     const texto = busqueda.toLowerCase();
@@ -78,68 +75,44 @@ export default function ServiciosPage() {
     );
   }, [servicios, busqueda]);
 
-  const handleGuardarServicio = (
-    servicio: Servicio
-  ) => {
-    const existe = servicios.some(
-      (s) => s.id === servicio.id
-    );
+  const handleGuardarServicio = async (
+    form: ServicioForm
+  ): Promise<boolean> => {
+    try {
+      if (form.id === 0) {
+        await crearServicio(form);
+        avisar("Servicio creado correctamente.");
+      } else {
+        await actualizarServicio(form);
+        avisar("Servicio actualizado correctamente.");
+      }
 
-    if (existe) {
-      setServicios(
-        servicios.map((s) =>
-          s.id === servicio.id ? servicio : s
-        )
-      );
-
-      setSnackbar({
-        open: true,
-        message:
-          "Servicio actualizado correctamente.",
-        severity: "success",
-      });
-    } else {
-      setServicios([...servicios, servicio]);
-
-      setSnackbar({
-        open: true,
-        message:
-          "Servicio creado correctamente.",
-        severity: "success",
-      });
+      setServicioEditar(null);
+      await cargarDatos();
+      return true;
+    } catch (error) {
+      avisar(mensajeError(error, "No se pudo guardar el servicio."), "error");
+      return false;
     }
-
-    setServicioEditar(null);
   };
 
-  const handleEliminarServicio = () => {
+  const handleEliminarServicio = async () => {
     if (!servicioEliminar) return;
 
-    setServicios(
-      servicios.filter(
-        (s) => s.id !== servicioEliminar.id
-      )
-    );
-
-    setSnackbar({
-      open: true,
-      message:
-        "Servicio eliminado correctamente.",
-      severity: "success",
-    });
-
-    setServicioEliminar(null);
+    try {
+      await eliminarServicio(servicioEliminar.id);
+      avisar("Servicio eliminado correctamente.");
+      await cargarDatos();
+    } catch (error) {
+      avisar(mensajeError(error, "No se pudo eliminar el servicio."), "error");
+    } finally {
+      setServicioEliminar(null);
+    }
   };
 
   const columns = [
-    {
-      field: "nombre",
-      headerName: "Servicio",
-    },
-    {
-      field: "categoria",
-      headerName: "Categoría",
-    },
+    { field: "nombre", headerName: "Servicio" },
+    { field: "categoria", headerName: "Categoría" },
     {
       field: "duracion",
       headerName: "Duración",
@@ -160,11 +133,7 @@ export default function ServiciosPage() {
       render: (value: string) => (
         <Chip
           label={value}
-          color={
-            value === "Activo"
-              ? "success"
-              : "default"
-          }
+          color={value === "Activo" ? "success" : "default"}
           size="small"
         />
       ),
@@ -175,7 +144,7 @@ export default function ServiciosPage() {
     <Box>
       <PageHeader
         title="Servicios"
-        subtitle="Administra los servicios de la barbería."
+        subtitle="Catálogo de servicios de la barbería. Cualquier barbero activo puede atenderlos."
         buttonText="Nuevo Servicio"
         onClick={() => {
           setServicioEditar(null);
@@ -187,9 +156,7 @@ export default function ServiciosPage() {
         fullWidth
         placeholder="Buscar servicio..."
         value={busqueda}
-        onChange={(e) =>
-          setBusqueda(e.target.value)
-        }
+        onChange={(e) => setBusqueda(e.target.value)}
         sx={{ mb: 3 }}
         slotProps={{
           input: {
@@ -202,32 +169,45 @@ export default function ServiciosPage() {
         }}
       />
 
-      <DataTable
-        columns={columns}
-        rows={serviciosFiltrados}
-        renderActions={(row) => (
-          <>
-            <IconButton
-              color="primary"
-              onClick={() => {
-                setServicioEditar(row);
-                setOpenModal(true);
-              }}
-            >
-              <EditIcon />
-            </IconButton>
+      {cargando ? (
+        <Box display="flex" justifyContent="center" py={6}>
+          <CircularProgress sx={{ color: "#D4AF37" }} />
+        </Box>
+      ) : (
+        <DataTable
+          columns={columns}
+          rows={serviciosFiltrados}
+          renderActions={(row) => (
+            <>
+              <IconButton
+                color="primary"
+                onClick={() => {
+                  setServicioEditar({
+                    id: row.id,
+                    nombre: row.nombre,
+                    categoria: row.categoria,
+                    descripcion: row.descripcion,
+                    duracion: row.duracion,
+                    precio: row.precio,
+                    estado: row.estado,
+                    barbershop_id: row.barbershop.id,
+                  });
+                  setOpenModal(true);
+                }}
+              >
+                <EditIcon />
+              </IconButton>
 
-            <IconButton
-              color="error"
-              onClick={() =>
-                setServicioEliminar(row)
-              }
-            >
-              <DeleteIcon />
-            </IconButton>
-          </>
-        )}
-      />
+              <IconButton
+                color="error"
+                onClick={() => setServicioEliminar(row)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </>
+          )}
+        />
+      )}
 
       <ServicioFormModal
         open={openModal}
@@ -242,23 +222,18 @@ export default function ServiciosPage() {
       <ConfirmDialog
         open={servicioEliminar !== null}
         title="Eliminar Servicio"
-        message={`¿Está seguro de eliminar "${servicioEliminar?.nombre ?? ""}"?`}
+        message={`¿Está seguro de eliminar ${
+          servicioEliminar?.nombre ?? ""
+        }?`}
         onConfirm={handleEliminarServicio}
-        onCancel={() =>
-          setServicioEliminar(null)
-        }
+        onCancel={() => setServicioEliminar(null)}
       />
 
       <AppSnackbar
         open={snackbar.open}
         message={snackbar.message}
         severity={snackbar.severity}
-        onClose={() =>
-          setSnackbar({
-            ...snackbar,
-            open: false,
-          })
-        }
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
       />
     </Box>
   );
