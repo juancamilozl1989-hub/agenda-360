@@ -594,10 +594,11 @@ Construir el bot de WhatsApp con el que el cliente agenda por su cuenta, validar
 - Ajustes después de probar desde el celular: solo se ofrecen los días con horas libres, las horas se muestran de 12 en 12 con «Ver más horas» y la agenda del panel tiene la pestaña «Próximas».
 - La suite quedó en 149 pruebas aprobadas en SQLite y PostgreSQL 16, con 94 % de cobertura.
 - Se actualizó el informe de la Fase 3 (sección 11.5 del bot, diagramas, pruebas y hallazgos H-15 a H-19).
+- Se reemplazó el token temporal de Meta (vence a las 24 horas) por un token permanente de un usuario del sistema con acceso a la app y a la cuenta de WhatsApp; el token solo está en `backend/.env`.
 
 ### Resultado
 El cliente puede consultar disponibilidad, agendar, ver y cancelar sus citas desde WhatsApp, y todo se refleja en el panel.
 
 ### Próximas actividades
-- Token permanente de Meta (usuario del sistema) y despliegue con HTTPS propio.
+- Dominio fijo de ngrok para no actualizar el webhook en cada prueba; más adelante, despliegue con HTTPS propio.
 - Recordatorios de citas con plantillas aprobadas por Meta.
