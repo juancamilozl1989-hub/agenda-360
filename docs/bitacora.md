@@ -580,3 +580,24 @@ La agenda respeta los horarios y la duración de cada servicio, y la API ya tien
 
 ### Próximas actividades
 - Construir el prototipo del bot de WhatsApp que consulte `/availability/` y registre la cita.
+
+## Fecha: 21/10/2026
+
+### Objetivo
+Construir el bot de WhatsApp con el que el cliente agenda por su cuenta, validarlo con un celular real y actualizar el documento de la Fase 3.
+
+### Actividades realizadas
+- Se integró la WhatsApp Cloud API de Meta con el número de prueba: webhook `GET/POST /webhook/whatsapp` con token de verificación, firma `X-Hub-Signature-256` y control de mensajes duplicados.
+- Se creó el servicio `bot_service.py` con el menú (agendar, ver mis citas, cancelar). Si el número no es de un cliente, el bot le pide el nombre y lo registra. Usa las mismas funciones `calcular_disponibilidad` y `crear_cita` del panel.
+- Nueva tabla `conversations` para guardar en qué paso va cada cliente; se reinicia tras 60 minutos sin actividad.
+- Se creó `app/whatsapp/cliente.py` (envío con httpx) y el script `scripts/suscribir_whatsapp.py`, porque sin suscribir la app a la cuenta de WhatsApp Business los mensajes no llegaban.
+- Ajustes después de probar desde el celular: solo se ofrecen los días con horas libres, las horas se muestran de 12 en 12 con «Ver más horas» y la agenda del panel tiene la pestaña «Próximas».
+- La suite quedó en 149 pruebas aprobadas en SQLite y PostgreSQL 16, con 94 % de cobertura.
+- Se actualizó el informe de la Fase 3 (sección 11.5 del bot, diagramas, pruebas y hallazgos H-15 a H-19).
+
+### Resultado
+El cliente puede consultar disponibilidad, agendar, ver y cancelar sus citas desde WhatsApp, y todo se refleja en el panel.
+
+### Próximas actividades
+- Token permanente de Meta (usuario del sistema) y despliegue con HTTPS propio.
+- Recordatorios de citas con plantillas aprobadas por Meta.

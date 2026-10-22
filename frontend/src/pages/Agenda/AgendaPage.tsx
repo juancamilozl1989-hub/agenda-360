@@ -88,7 +88,9 @@ export default function AgendaPage() {
     cargarDatos();
   }, [cargarDatos]);
 
-  // Filtra por pestaña (Hoy / Semana / Mes) y ordena cronológicamente
+  // Filtra por pestaña y ordena cronológicamente:
+  // 0 = hoy, 1 = esta semana (lunes a domingo), 2 = este mes,
+  // 3 = próximas (todas las citas desde hoy, aunque sean de otro mes)
   const citasVisibles = useMemo(() => {
     const hoy = hoyTexto();
     const lunes = inicioSemana(hoy);
@@ -98,7 +100,8 @@ export default function AgendaPage() {
       .filter((c) => {
         if (pestana === 0) return c.fecha === hoy;
         if (pestana === 1) return c.fecha >= lunes && c.fecha <= domingo;
-        return mismoMes(c.fecha, hoy);
+        if (pestana === 2) return mismoMes(c.fecha, hoy);
+        return c.fecha >= hoy;
       })
       .sort((a, b) =>
         `${a.fecha} ${a.hora}`.localeCompare(`${b.fecha} ${b.hora}`)
@@ -210,8 +213,9 @@ export default function AgendaPage() {
         }}
       >
         <Tab label="Hoy" />
-        <Tab label="Semana" />
-        <Tab label="Mes" />
+        <Tab label="Esta semana" />
+        <Tab label="Este mes" />
+        <Tab label="Próximas" />
       </Tabs>
 
       {/* Contenedor de la Agenda */}

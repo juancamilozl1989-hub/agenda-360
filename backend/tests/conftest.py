@@ -36,6 +36,7 @@ from app.utils.agenda import DIAS_SEMANA
 # Se importan todos los modelos para que Base conozca todas las tablas
 from app.models import (  # noqa: F401
     appointment_model,
+    conversation_model,
     barber_model,
     barbershop_model,
     client_model,

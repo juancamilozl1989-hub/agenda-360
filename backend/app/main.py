@@ -18,6 +18,7 @@ from app.api.schedule_api import router as schedule_router
 from app.api.client_api import router as client_router
 from app.api.appointment_api import router as appointment_router
 from app.api.availability_api import router as availability_router
+from app.api.whatsapp_api import router as whatsapp_router
 
 from app.core.security import (
     obtener_password_hash,
@@ -33,6 +34,7 @@ from app.models.service_model import Service
 from app.models.schedule_model import Schedule
 from app.models.client_model import Client
 from app.models.appointment_model import Appointment
+from app.models.conversation_model import Conversation
 
 # ==========================================================
 # Ciclo de vida de la aplicación
@@ -103,6 +105,7 @@ app.include_router(schedule_router)
 app.include_router(client_router)
 app.include_router(appointment_router)
 app.include_router(availability_router)
+app.include_router(whatsapp_router)
 
 @app.get("/")
 def inicio():

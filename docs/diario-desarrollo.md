@@ -360,6 +360,17 @@ Pensando en el bot de WhatsApp, donde es el cliente quien elige el día y la hor
 
 Todo quedó probado: 112 pruebas aprobadas en SQLite y en PostgreSQL. Con estos cambios se actualizó el informe de la Fase 3, rehaciendo los diagramas y las capturas para que coincidan con lo que realmente está construido.
 
+## Día de desarrollo 21/10/2026
+
+Hoy se construyó el bot de WhatsApp. Usé la Cloud API de Meta con el número de prueba que da la plataforma y ngrok para que Meta pudiera llegar al backend que corre en mi equipo. El bot no tiene reglas propias: llama a las mismas funciones de disponibilidad y de creación de citas del panel, así que lo que no se puede agendar en el panel tampoco se puede por WhatsApp.
+
+La conexión costó más que el código. Meta verificaba el webhook, pero los mensajes nunca llegaban; faltaba suscribir la aplicación a la cuenta de WhatsApp Business, y para no repetirlo a mano quedó un script. Luego el bot dejó de responder de un momento a otro: el token temporal de Meta vence a las 24 horas, hay que cambiarlo en el `.env` y reiniciar uvicorn.
+
+Al probar desde el celular salieron detalles de uso. Con un barbero que solo atiende los martes, el bot ofrecía días en los que no había nada y tocaba probar uno por uno; ahora solo muestra los días con espacio. Las horas de la tarde no se podían elegir porque la lista se cortaba en 12; se agregó «Ver más horas». Y en el panel, una cita del mes siguiente no aparecía en ninguna pestaña de la agenda, así que se agregó «Próximas».
+
+Quedaron 149 pruebas aprobadas en SQLite y PostgreSQL, y se actualizó el informe con la sección del bot y las capturas de la conversación.
+
 ## Próxima sesión
 
-- Prototipo del bot de WhatsApp sobre la consulta de disponibilidad.
+- Token permanente de Meta y despliegue con HTTPS.
+- Recordatorios de citas con plantillas de WhatsApp.
